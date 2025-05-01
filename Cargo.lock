@@ -127,6 +127,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "inotify",
+ "log",
  "simple_logger",
 ]
 
