@@ -1,0 +1,28 @@
+osm = "powersave"
+[cpu_config]
+big = 7
+middle = 4
+small = 0
+
+[powersave]
+big_cpu_freq = 60000
+middle_cpu_freq = 3000
+small_cpu_freq = 1000
+
+[balance]
+big_cpu_freq = 60000
+middle_cpu_freq = 3000
+small_cpu_freq = 1000
+
+[performance]
+big_cpu_freq = 60000
+middle_cpu_freq = 3000
+small_cpu_freq = 1000
+
+[fast]
+big_cpu_freq = 60000
+middle_cpu_freq = 3000
+small_cpu_freq = 1000
+
+[applist]
+"bin.mt.plus" = "powersave"
