@@ -10,7 +10,7 @@ impl data::ConfigData {
     pub fn new() -> Self {
         let s = Self {
             powersave: CpuFreq {
-                super_cpu_freq: FreqInfo { max: 0, min: 0 },
+                super_big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
                 small_cpu_freq: FreqInfo { max: 0, min: 0 },
@@ -22,13 +22,13 @@ impl data::ConfigData {
                 small_cpu_freq: FreqInfo { max: 0, min: 0 },
             },
             performance: CpuFreq {
-                super_cpu_freq: FreqInfo { max: 0, min: 0 },
+                super_big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
                 small_cpu_freq: FreqInfo { max: 0, min: 0 },
             },
             fast: CpuFreq {
-                super_cpu_freq: FreqInfo { max: 0, min: 0 },
+                super_big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
                 small_cpu_freq: FreqInfo { max: 0, min: 0 },
