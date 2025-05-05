@@ -1,7 +1,7 @@
 mod cpu;
 mod dump;
 
-use std::{process::Command, fs::write};
+use std::{fs::write, process::Command};
 
 use anyhow::Result;
 use cpu::Cpu;
