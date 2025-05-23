@@ -7,7 +7,7 @@ use std::{
 
 use anyhow::{Context, Result};
 
-use crate::framework::config::data::ConfigData;
+use crate::framework::config::data::{ConfigData, FreqInfo};
 
 use super::Mode;
 
@@ -21,10 +21,22 @@ impl Cpu {
             config: ConfigData::new(),
         }
     }
+
+    /*
+     * 配置文件加载地方
+     * 2025-05-24
+     */
     pub fn load_config(&mut self, config: ConfigData) {
         self.config = config;
     }
 
+    /*
+     * Option类型转换
+     * 2025-05-24
+     */
+    fn option_to_no(&self, s: Option<FreqInfo>) -> FreqInfo {
+        s.unwrap_or_default()
+    }
     /*
      * cpu频率设置，mode为当前的模式，自动根据配置文件设置
      * 2025-05-24
@@ -100,14 +112,14 @@ impl Cpu {
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.config.powersave.small_cpu_freq.max,
-                        self.config.powersave.small_cpu_freq.min,
+                        self.option_to_no(self.config.powersave.small_cpu_freq).max,
+                        self.option_to_no(self.config.powersave.small_cpu_freq).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.config.powersave.super_big_cpu_freq.max,
-                        self.config.powersave.super_big_cpu_freq.min,
+                        self.option_to_no(self.config.powersave.super_big_cpu_freq).max,
+                        self.option_to_no(self.config.powersave.super_big_cpu_freq).min,
                     ]);
                 }
             }
@@ -122,14 +134,14 @@ impl Cpu {
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.config.balance.small_cpu_freq.max,
-                        self.config.balance.small_cpu_freq.min,
+                        self.option_to_no(self.config.balance.small_cpu_freq).max,
+                        self.option_to_no(self.config.balance.small_cpu_freq).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.config.balance.super_big_cpu_freq.max,
-                        self.config.balance.super_big_cpu_freq.min,
+                        self.option_to_no(self.config.balance.super_big_cpu_freq).max,
+                        self.option_to_no(self.config.balance.super_big_cpu_freq).min,
                     ]);
                 }
             }
@@ -144,14 +156,14 @@ impl Cpu {
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.config.performance.small_cpu_freq.max,
-                        self.config.performance.small_cpu_freq.min,
+                        self.option_to_no(self.config.performance.small_cpu_freq).max,
+                        self.option_to_no(self.config.performance.small_cpu_freq).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.config.performance.super_big_cpu_freq.max,
-                        self.config.performance.super_big_cpu_freq.min,
+                        self.option_to_no(self.config.performance.super_big_cpu_freq).max,
+                        self.option_to_no(self.config.performance.super_big_cpu_freq).min,
                     ]);
                 }
             }
@@ -166,14 +178,14 @@ impl Cpu {
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.config.fast.small_cpu_freq.max,
-                        self.config.fast.small_cpu_freq.min,
+                        self.option_to_no(self.config.fast.small_cpu_freq).max,
+                        self.option_to_no(self.config.fast.small_cpu_freq).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.config.fast.super_big_cpu_freq.max,
-                        self.config.fast.super_big_cpu_freq.min,
+                        self.option_to_no(self.config.fast.super_big_cpu_freq).max,
+                        self.option_to_no(self.config.fast.super_big_cpu_freq).min,
                     ]);
                 }
             }

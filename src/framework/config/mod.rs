@@ -10,28 +10,28 @@ impl data::ConfigData {
     pub fn new() -> Self {
         let s = Self {
             powersave: CpuFreq {
-                super_big_cpu_freq: FreqInfo { max: 0, min: 0 },
+                super_big_cpu_freq: None,
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
-                small_cpu_freq: FreqInfo { max: 0, min: 0 },
+                small_cpu_freq: None,
             },
             balance: CpuFreq {
-                super_big_cpu_freq: FreqInfo { max: 0, min: 0 },
+                super_big_cpu_freq: None,
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
-                small_cpu_freq: FreqInfo { max: 0, min: 0 },
+                small_cpu_freq: None,
             },
             performance: CpuFreq {
-                super_big_cpu_freq: FreqInfo { max: 0, min: 0 },
+                super_big_cpu_freq: None,
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
-                small_cpu_freq: FreqInfo { max: 0, min: 0 },
+                small_cpu_freq: None,
             },
             fast: CpuFreq {
-                super_big_cpu_freq: FreqInfo { max: 0, min: 0 },
+                super_big_cpu_freq: None,
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
-                small_cpu_freq: FreqInfo { max: 0, min: 0 },
+                small_cpu_freq: None,
             },
             cpu_config: data::Cpu {
                 super_big: None,
