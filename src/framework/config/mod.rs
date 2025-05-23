@@ -34,10 +34,10 @@ impl data::ConfigData {
                 small_cpu_freq: FreqInfo { max: 0, min: 0 },
             },
             cpu_config: data::Cpu {
+            super_big: None,
                 big: 0,
                 middle: 0,
-                small: 0,
-                super_big: 0,
+                small: None,
             },
             osm: String::new(),
             applist: HashMap::new(),

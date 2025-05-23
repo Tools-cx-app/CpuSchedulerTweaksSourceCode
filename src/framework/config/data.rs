@@ -29,8 +29,8 @@ pub struct FreqInfo {
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct Cpu {
+    pub super_big: Option<u16>,
     pub big: u16,
     pub middle: u16,
-    pub small: u16,
-    pub super_big: u16,
+    pub small: Option<u16>,
 }
