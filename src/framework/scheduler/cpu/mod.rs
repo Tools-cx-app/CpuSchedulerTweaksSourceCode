@@ -26,9 +26,9 @@ impl Cpu {
     }
 
     /*
-    * cpu频率设置，mode为当前的模式，自动根据配置文件设置
-    * 2025-05-24
-    */
+     * cpu频率设置，mode为当前的模式，自动根据配置文件设置
+     * 2025-05-24
+     */
     pub fn set_freq(&self, mode: Mode) {
         let big_path = PathBuf::from(format!(
             "/sys/devices/system/cpu/cpufreq/policy{}",
@@ -46,14 +46,14 @@ impl Cpu {
             .config
             .cpu_config
             .small
-            .map(|id| PathBuf::from(format!("/sys/devices/system/cpu/cpufreq/policy{}", id)));
+            .map(|id| PathBuf::from(format!("/sys/devices/system/cpu/cpufreq/policy{id}")));
         let small = small_path.as_ref().map(|p| p.as_path());
 
         let super_big_path = self
             .config
             .cpu_config
             .super_big
-            .map(|id| PathBuf::from(format!("/sys/devices/system/cpu/cpufreq/policy{}", id)));
+            .map(|id| PathBuf::from(format!("/sys/devices/system/cpu/cpufreq/policy{id}")));
         let super_big = super_big_path.as_ref().map(|p| p.as_path());
 
         if !big.exists() {
@@ -85,9 +85,9 @@ impl Cpu {
         let mut super_big_freq = Vec::new();
 
         /*
-        * 自动判断，并按顺序写入频率变量
-        * 2025-05-24
-        */
+         * 自动判断，并按顺序写入频率变量
+         * 2025-05-24
+         */
         match mode {
             Mode::Powersave => {
                 big_freq.extend(&[
@@ -216,4 +216,3 @@ impl Cpu {
         Ok(())
     }
 }
-
