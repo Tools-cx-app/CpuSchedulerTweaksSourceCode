@@ -1,3 +1,0 @@
-[submodule "module"]
-	path = module
-	url = git@github.com:Tools-cx-app/life-death-scheduler-release.git
