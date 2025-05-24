@@ -4,7 +4,7 @@ mod dump;
 use std::{fs::write, process::Command};
 
 use anyhow::Result;
-use cpu::Cpu;
+use cpu::{Cpu, freq::CpuFreqs};
 use dump::topapps::TopAppWatch;
 use glob::glob;
 use inotify::{Inotify, WatchMask};
