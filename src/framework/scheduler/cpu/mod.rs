@@ -29,7 +29,7 @@ impl Cpu {
     fn option_to_no(&self, s: Option<FreqInfo>) -> FreqInfo {
         s.unwrap_or_default()
     }
-    
+
     fn option_to_string(&self, s: Option<String>) -> String {
         s.unwrap_or_default()
     }
