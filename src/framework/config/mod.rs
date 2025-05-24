@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fs};
 
-use data::{CpuInfo, FreqInfo};
+use data::{CpuCtl, CpuCtlInfo, CpuCtlUclamp, CpuInfo, FreqInfo};
 
 use crate::defs;
 
@@ -18,6 +18,16 @@ impl data::ConfigData {
                 big_cpu_governor: String::new(),
                 middle_cpu_governor: String::new(),
                 small_cpu_governor: None,
+                cpuctl: CpuCtl {
+                    top_app: CpuCtlInfo {
+                        shares: 0,
+                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
+                    },
+                    foreground: CpuCtlInfo {
+                        shares: 0,
+                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
+                    },
+                },
             },
             balance: CpuInfo {
                 super_big_cpu_freq: None,
@@ -28,6 +38,16 @@ impl data::ConfigData {
                 big_cpu_governor: String::new(),
                 middle_cpu_governor: String::new(),
                 small_cpu_governor: None,
+                cpuctl: CpuCtl {
+                    top_app: CpuCtlInfo {
+                        shares: 0,
+                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
+                    },
+                    foreground: CpuCtlInfo {
+                        shares: 0,
+                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
+                    },
+                },
             },
             performance: CpuInfo {
                 super_big_cpu_freq: None,
@@ -38,6 +58,16 @@ impl data::ConfigData {
                 big_cpu_governor: String::new(),
                 middle_cpu_governor: String::new(),
                 small_cpu_governor: None,
+                cpuctl: CpuCtl {
+                    top_app: CpuCtlInfo {
+                        shares: 0,
+                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
+                    },
+                    foreground: CpuCtlInfo {
+                        shares: 0,
+                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
+                    },
+                },
             },
             fast: CpuInfo {
                 super_big_cpu_freq: None,
@@ -48,6 +78,16 @@ impl data::ConfigData {
                 big_cpu_governor: String::new(),
                 middle_cpu_governor: String::new(),
                 small_cpu_governor: None,
+                cpuctl: CpuCtl {
+                    top_app: CpuCtlInfo {
+                        shares: 0,
+                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
+                    },
+                    foreground: CpuCtlInfo {
+                        shares: 0,
+                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
+                    },
+                },
             },
             cpu_config: data::Cpu {
                 super_big: None,

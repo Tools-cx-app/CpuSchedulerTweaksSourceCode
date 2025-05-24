@@ -23,6 +23,7 @@ pub struct CpuInfo {
     pub big_cpu_governor: String,
     pub middle_cpu_governor: String,
     pub small_cpu_governor: Option<String>,
+    pub cpuctl: CpuCtl,
 }
 
 #[derive(Deserialize, Debug, Clone, Copy, Default)]
@@ -37,4 +38,22 @@ pub struct Cpu {
     pub big: u16,
     pub middle: u16,
     pub small: Option<u16>,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct CpuCtl {
+    pub top_app: CpuCtlInfo,
+    pub foreground: CpuCtlInfo,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct CpuCtlInfo {
+    pub shares: u16,
+    pub uclamp: CpuCtlUclamp,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct CpuCtlUclamp {
+    pub max: u16,
+    pub min: u16,
 }
