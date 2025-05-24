@@ -1,4 +1,5 @@
 mod cpu;
+mod cpuctl;
 mod dump;
 
 use std::{fs::write, process::Command};
@@ -96,7 +97,9 @@ impl Looper {
             }
 
             for (app, mode) in self.config.applist.clone() {
-                if app_cache.unwrap_or_default() != self.topapp.get() && self.topapp.get() == app {
+                if app_cache.clone().unwrap_or_default() != self.topapp.get()
+                    && self.topapp.get() == app
+                {
                     log::info!("正在为{app}配置{mode}模式");
                     self.cpu.set_freq(self.switch_mode(mode.as_str()));
                     self.cpu.set_governor(self.switch_mode(mode.as_str()));

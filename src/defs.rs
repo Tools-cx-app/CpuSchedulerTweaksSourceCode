@@ -1,3 +1,5 @@
+use std::path::{Path, PathBuf};
+
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const CONFIG_PATH: &str = "/data/adb/modules/life_death_scheduler/config.toml";
 pub const BOOST_PATHS: [&str; 49] = [
@@ -52,3 +54,4 @@ pub const BOOST_PATHS: [&str; 49] = [
     "/proc/sys/walt/input_boost/*",
 ];
 pub const RESET_TIME: std::time::Duration = std::time::Duration::from_secs(1);
+pub const TOP_APP_CPUCTL: PathBuf = PathBuf::from("/dev/cpuctl/top-app/");
