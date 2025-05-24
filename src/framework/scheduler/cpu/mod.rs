@@ -1,4 +1,5 @@
 pub mod freq;
+pub mod governor;
 
 use crate::framework::config::data::{ConfigData, FreqInfo};
 
@@ -26,6 +27,10 @@ impl Cpu {
      * 2025-05-24
      */
     fn option_to_no(&self, s: Option<FreqInfo>) -> FreqInfo {
+        s.unwrap_or_default()
+    }
+    
+    fn option_to_string(&self, s: Option<String>) -> String {
         s.unwrap_or_default()
     }
 }

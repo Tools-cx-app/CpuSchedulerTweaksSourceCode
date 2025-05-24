@@ -4,7 +4,7 @@ mod dump;
 use std::{fs::write, process::Command};
 
 use anyhow::Result;
-use cpu::{Cpu, freq::CpuFreqs};
+use cpu::{Cpu, freq::CpuFreqs, governor::CpuGovernor};
 use dump::topapps::TopAppWatch;
 use glob::glob;
 use inotify::{Inotify, WatchMask};
@@ -98,9 +98,12 @@ impl Looper {
                 if self.topapp.get() == app {
                     log::info!("正在为{app}配置{mode}模式");
                     self.cpu.set_freq(self.switch_mode(mode.as_str()));
+                    self.cpu.set_governor(self.switch_mode(mode.as_str()));
                 } else {
                     self.cpu
                         .set_freq(self.switch_mode(self.config.osm.as_str()));
+                    self.cpu
+                        .set_governor(self.switch_mode(self.config.osm.as_str()));
                 }
             }
         }
