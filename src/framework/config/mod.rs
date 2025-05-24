@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fs};
 
-use data::{CpuFreq, FreqInfo};
+use data::{CpuInfo, FreqInfo};
 
 use crate::defs;
 
@@ -9,29 +9,45 @@ pub mod data;
 impl data::ConfigData {
     pub fn new() -> Self {
         let s = Self {
-            powersave: CpuFreq {
+            powersave: CpuInfo {
                 super_big_cpu_freq: None,
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
                 small_cpu_freq: None,
+                super_big_cpu_governor: None,
+                big_cpu_governor: String::new(),
+                middle_cpu_governor: String::new(),
+                small_cpu_governor: None,
             },
-            balance: CpuFreq {
+            balance: CpuInfo {
                 super_big_cpu_freq: None,
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
                 small_cpu_freq: None,
+                super_big_cpu_governor: None,
+                big_cpu_governor: String::new(),
+                middle_cpu_governor: String::new(),
+                small_cpu_governor: None,
             },
-            performance: CpuFreq {
+            performance: CpuInfo {
                 super_big_cpu_freq: None,
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
                 small_cpu_freq: None,
+                super_big_cpu_governor: None,
+                big_cpu_governor: String::new(),
+                middle_cpu_governor: String::new(),
+                small_cpu_governor: None,
             },
-            fast: CpuFreq {
+            fast: CpuInfo {
                 super_big_cpu_freq: None,
                 big_cpu_freq: FreqInfo { max: 0, min: 0 },
                 middle_cpu_freq: FreqInfo { max: 0, min: 0 },
                 small_cpu_freq: None,
+                super_big_cpu_governor: None,
+                big_cpu_governor: String::new(),
+                middle_cpu_governor: String::new(),
+                small_cpu_governor: None,
             },
             cpu_config: data::Cpu {
                 super_big: None,
