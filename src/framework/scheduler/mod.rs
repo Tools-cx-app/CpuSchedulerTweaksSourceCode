@@ -6,6 +6,7 @@ use std::{fs::write, process::Command};
 
 use anyhow::Result;
 use cpu::{Cpu, freq::CpuFreqs, governor::CpuGovernor};
+use cpuctl::CpuCtl;
 use dump::topapps::TopAppWatch;
 use glob::glob;
 use inotify::{Inotify, WatchMask};
@@ -23,6 +24,7 @@ pub enum Mode {
 
 pub struct Looper {
     cpu: Cpu,
+    cpuctl: CpuCtl,
     mode: Mode,
     config: ConfigData,
     topapp: TopAppWatch,
@@ -32,6 +34,7 @@ impl Looper {
     pub fn new() -> Self {
         Self {
             cpu: Cpu::new(),
+            cpuctl: CpuCtl::new(),
             mode: Mode::Balance,
             config: ConfigData::new(),
             topapp: TopAppWatch::new(),
@@ -87,6 +90,7 @@ impl Looper {
             inotify.read_events_blocking(&mut [0; 1024])?;
             self.config.load_config();
             self.cpu.load_config(self.config.clone());
+            self.cpuctl.load_config(self.config.clone());
             self.topapp.dump();
 
             #[cfg(debug_assertions)]
@@ -103,12 +107,14 @@ impl Looper {
                     log::info!("正在为{app}配置{mode}模式");
                     self.cpu.set_freq(self.switch_mode(mode.as_str()));
                     self.cpu.set_governor(self.switch_mode(mode.as_str()));
+                    self.cpuctl.set_uclamp(self.switch_mode(mode.as_str()));
                     app_cache = Some(app);
                 } else {
                     self.cpu
                         .set_freq(self.switch_mode(self.config.osm.as_str()));
                     self.cpu
                         .set_governor(self.switch_mode(self.config.osm.as_str()));
+                        self.cpuctl.set_uclamp(self.switch_mode(self.config.osm.as_str()));
                 }
             }
         }
