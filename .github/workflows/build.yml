@@ -22,17 +22,17 @@ jobs:
     - name: Install Rust
       uses: actions-rs/toolchain@v1
       with:
-        toolchain: stable
+        toolchain: nightly
         profile: minimal
         override: true
     
     - name: Build Release in code directory
       working-directory: ./code
-      run: cargo ndk build --release
+      run: cargo install ndk && cargo ndk build --release
       
     - name: Build Debug in code directory
       working-directory: ./code
-      run: cargo ndk build
+      run: cargo install ndk && cargo ndk build
       
     - name: Copy binaries to binaries directory
       run: |
