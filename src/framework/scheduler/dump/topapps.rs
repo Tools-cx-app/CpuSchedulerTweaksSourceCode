@@ -67,7 +67,7 @@ impl TopAppWatch {
             match dumper.dump(&["lru"]) {
                 Ok(d) => break d,
                 Err(e) => {
-                    log::error!("Unable to get foreground application: {e}");
+                    log::error!("无法获取前台应用: {e}");
                     std::thread::sleep(Duration::from_secs(1));
                 }
             };
