@@ -34,8 +34,8 @@ impl CpuCtl {
      * 2025-05-25
      */
     pub fn set_uclamp(&self, mode: Mode) -> Result<()> {
-    let top_app_cpuctl = Path::new(TOP_APP_CPUCTL);
-            let top_app_uclamp_max = top_app_cpuctl.join("cpu.uclamp.max");
+        let top_app_cpuctl = Path::new(TOP_APP_CPUCTL);
+        let top_app_uclamp_max = top_app_cpuctl.join("cpu.uclamp.max");
         let top_app_uclamp_min = top_app_cpuctl.join("cpu.uclamp.min");
         let top_app_shares = top_app_cpuctl.join("cpu.shares");
 
@@ -61,8 +61,11 @@ impl CpuCtl {
                     .context("无法恢复最大频率权限")?;
                 set_permissions(&top_app_shares, Permissions::from_mode(0o644))
                     .context("无法设置最大频率权限")?;
-                write(&top_app_shares, self.config.powersave.cpuctl.top_app.shares.to_string())
-                    .context("无法写入最大频率")?;
+                write(
+                    &top_app_shares,
+                    self.config.powersave.cpuctl.top_app.shares.to_string(),
+                )
+                .context("无法写入最大频率")?;
                 set_permissions(&top_app_shares, Permissions::from_mode(0o400))
                     .context("无法恢复最大频率权限")?;
             }
@@ -87,8 +90,11 @@ impl CpuCtl {
                     .context("无法恢复最大频率权限")?;
                 set_permissions(&top_app_shares, Permissions::from_mode(0o644))
                     .context("无法设置最大频率权限")?;
-                write(&top_app_shares, self.config.balance.cpuctl.top_app.shares.to_string())
-                    .context("无法写入最大频率")?;
+                write(
+                    &top_app_shares,
+                    self.config.balance.cpuctl.top_app.shares.to_string(),
+                )
+                .context("无法写入最大频率")?;
                 set_permissions(&top_app_shares, Permissions::from_mode(0o400))
                     .context("无法恢复最大频率权限")?;
             }
@@ -97,7 +103,13 @@ impl CpuCtl {
                     .context("无法设置最大频率权限")?;
                 write(
                     &top_app_uclamp_max,
-                    self.config.performance.cpuctl.top_app.uclamp.max.to_string(),
+                    self.config
+                        .performance
+                        .cpuctl
+                        .top_app
+                        .uclamp
+                        .max
+                        .to_string(),
                 )
                 .context("无法写入最大频率")?;
                 set_permissions(&top_app_uclamp_max, Permissions::from_mode(0o400))
@@ -106,7 +118,13 @@ impl CpuCtl {
                     .context("无法设置最大频率权限")?;
                 write(
                     &top_app_uclamp_min,
-                    self.config.performance.cpuctl.top_app.uclamp.min.to_string(),
+                    self.config
+                        .performance
+                        .cpuctl
+                        .top_app
+                        .uclamp
+                        .min
+                        .to_string(),
                 )
                 .context("无法写入最大频率")?;
                 set_permissions(&top_app_uclamp_min, Permissions::from_mode(0o400))

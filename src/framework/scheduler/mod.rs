@@ -2,7 +2,11 @@ mod cpu;
 mod cpuctl;
 mod dump;
 
-use std::{fs::write, process::Command};
+use std::{
+    fs::write,
+    process::Command,
+    sync::atomic::{AtomicBool, Ordering},
+};
 
 use anyhow::Result;
 use cpu::{Cpu, freq::CpuFreqs, governor::CpuGovernor};
@@ -13,6 +17,8 @@ use inotify::{Inotify, WatchMask};
 
 use super::config::data::ConfigData;
 use crate::defs;
+
+static BINDER: AtomicBool = AtomicBool::new(false);
 
 #[derive(Debug, Clone, Copy)]
 pub enum Mode {
@@ -93,6 +99,8 @@ impl Looper {
             self.cpuctl.load_config(self.config.clone());
             self.topapp.dump();
 
+            BINDER.store(true, Ordering::SeqCst);
+
             #[cfg(debug_assertions)]
             {
                 log::debug!("当前topapp: {}", self.topapp.get());
@@ -114,7 +122,8 @@ impl Looper {
                         .set_freq(self.switch_mode(self.config.osm.as_str()));
                     self.cpu
                         .set_governor(self.switch_mode(self.config.osm.as_str()));
-                        self.cpuctl.set_uclamp(self.switch_mode(self.config.osm.as_str()));
+                    self.cpuctl
+                        .set_uclamp(self.switch_mode(self.config.osm.as_str()));
                 }
             }
         }
