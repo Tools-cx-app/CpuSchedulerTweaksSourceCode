@@ -92,14 +92,16 @@ impl Looper {
         let mut app_cache = Some(String::new());
         inotify.watches().add("/dev/input", WatchMask::ACCESS)?;
 
+        if self.config.binder {
+            BINDER.store(true, Ordering::SeqCst);
+        }
+
         loop {
             inotify.read_events_blocking(&mut [0; 1024])?;
             self.config.load_config();
             self.cpu.load_config(self.config.clone());
             self.cpuctl.load_config(self.config.clone());
             self.topapp.dump();
-
-            BINDER.store(true, Ordering::SeqCst);
 
             #[cfg(debug_assertions)]
             {
