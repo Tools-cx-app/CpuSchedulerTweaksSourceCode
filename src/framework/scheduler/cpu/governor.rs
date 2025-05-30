@@ -4,11 +4,12 @@ use std::{
     fs::{Permissions, set_permissions, write},
     os::unix::fs::PermissionsExt,
     path::{Path, PathBuf},
+    sync::atomic::Ordering,
 };
 
 use anyhow::{Context, Result};
 
-use crate::framework::scheduler::Mode;
+use crate::framework::scheduler::{DEBUG, Mode};
 
 use super::Cpu;
 
@@ -60,8 +61,7 @@ impl CpuGovernor for Cpu {
         let has_small_big = small.map(|p| p.exists()).unwrap_or(false);
         let has_super_big = super_big.map(|p| p.exists()).unwrap_or(false);
 
-        #[cfg(debug_assertions)]
-        {
+        if DEBUG.load(Ordering::SeqCst) {
             log::debug!("big簇: {}", big.display());
             log::debug!("middle簇: {}", middle.display());
             if let Some(s) = small {

@@ -19,6 +19,7 @@ use super::config::data::ConfigData;
 use crate::defs;
 
 static BINDER: AtomicBool = AtomicBool::new(false);
+static DEBUG: AtomicBool = AtomicBool::new(false);
 
 #[derive(Debug, Clone, Copy)]
 pub enum Mode {
@@ -95,6 +96,9 @@ impl Looper {
         if self.config.binder {
             BINDER.store(true, Ordering::SeqCst);
         }
+        if self.config.debug {
+            DEBUG.store(true, Ordering::SeqCst);
+        }
 
         loop {
             inotify.read_events_blocking(&mut [0; 1024])?;
@@ -103,8 +107,7 @@ impl Looper {
             self.cpuctl.load_config(self.config.clone());
             self.topapp.dump();
 
-            #[cfg(debug_assertions)]
-            {
+            if DEBUG.load(Ordering::SeqCst) {
                 log::debug!("当前topapp: {}", self.topapp.get());
                 log::debug!("当前mode: {:?}", self.mode);
                 log::debug!("当前config: {:?}", self.config);
