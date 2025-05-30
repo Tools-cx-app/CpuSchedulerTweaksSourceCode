@@ -1,5 +1,7 @@
 osm = "powersave"
 
+binder = false
+
 [cpu_config]
 big = 7
 middle = 4
