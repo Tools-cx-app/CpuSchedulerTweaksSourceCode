@@ -1,0 +1,71 @@
+name: Rust Build and Package
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout repository to code directory
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.ACCESS_TOKEN }}
+        repository: Tools-cx-app/life-death-scheduler
+        path: code
+    
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        profile: minimal
+        override: true
+    
+    - name: Build Release in code directory
+      working-directory: ./code
+      run: cargo ndk build --release
+      
+    - name: Build Debug in code directory
+      working-directory: ./code
+      run: cargo ndk build
+      
+    - name: Copy binaries to binaries directory
+      run: |
+        # 复制 release 二进制
+        if [ -f "code/target/aarch64-linux-android/release/life-death-scheduler" ]; then
+          cp code/target/aarch64-linux-android/release/life-death-scheduler .
+        else
+          echo "##[error] Release binary not found!"
+          ls -R code/target/aarch64-linux-android/release .
+          exit 1
+        fi
+        
+        # 复制 debug 二进制
+        if [ -f "code/target/aarch64-linux-android/debug/life-death-scheduler" ]; then
+          cp code/target/aarch64-linux-android/debug/life-death-scheduler .
+        else
+          exit 1
+        fi
+    - name: Package binaries
+      run: |
+        apt install zip -y
+        
+        zip -r life-death-scheduler.zip . 
+      id: package
+      
+    - name: Upload Release Package
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-package
+        path: ${{ steps.package.outputs.release_package }}
+        
+    - name: Upload Debug Package
+      uses: actions/upload-artifact@v4
+      with:
+        name: debug-package
+        path: ${{ steps.package.outputs.debug_package }}
