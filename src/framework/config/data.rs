@@ -17,17 +17,26 @@ pub struct ConfigData {
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct CpuInfo {
-    pub super_big_cpu_freq: Option<FreqInfo>,
-    pub big_cpu_freq: FreqInfo,
-    pub middle_cpu_freq: FreqInfo,
-    pub small_cpu_freq: Option<FreqInfo>,
-    pub super_big_cpu_governor: Option<String>,
-    pub big_cpu_governor: String,
-    pub middle_cpu_governor: String,
-    pub small_cpu_governor: Option<String>,
+    pub freqs: CpuFreqs,
+    pub governor: Governor,
     pub cpuctl: CpuCtl,
 }
 
+#[derive(Deserialize, Debug, Clone)]
+pub struct Governor {
+    pub super_big_cpu: Option<String>,
+    pub big_cpu: String,
+    pub middle_cpu: String,
+    pub small_cpu: Option<String>,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct CpuFreqs {
+    pub super_big_cpu: Option<FreqInfo>,
+    pub big_cpu: FreqInfo,
+    pub middle_cpu: FreqInfo,
+    pub small_cpu: Option<FreqInfo>,
+}
 #[derive(Deserialize, Debug, Clone, Copy, Default)]
 pub struct FreqInfo {
     pub max: u64,

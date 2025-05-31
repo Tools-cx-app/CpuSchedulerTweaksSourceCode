@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fs};
 
-use data::{CpuCtl, CpuCtlInfo, CpuCtlUclamp, CpuInfo, FreqInfo};
+use data::{CpuCtl, CpuCtlInfo, CpuCtlUclamp, CpuFreqs, CpuInfo, FreqInfo, Governor};
 
 use crate::defs;
 
@@ -10,14 +10,18 @@ impl data::ConfigData {
     pub fn new() -> Self {
         let s = Self {
             powersave: CpuInfo {
-                super_big_cpu_freq: None,
-                big_cpu_freq: FreqInfo { max: 0, min: 0 },
-                middle_cpu_freq: FreqInfo { max: 0, min: 0 },
-                small_cpu_freq: None,
-                super_big_cpu_governor: None,
-                big_cpu_governor: String::new(),
-                middle_cpu_governor: String::new(),
-                small_cpu_governor: None,
+                freqs: CpuFreqs {
+                    super_big_cpu: None,
+                    big_cpu: FreqInfo { max: 0, min: 0 },
+                    middle_cpu: FreqInfo { max: 0, min: 0 },
+                    small_cpu: None,
+                },
+                governor: Governor {
+                    super_big_cpu: None,
+                    big_cpu: String::new(),
+                    middle_cpu: String::new(),
+                    small_cpu: None,
+                },
                 cpuctl: CpuCtl {
                     top_app: CpuCtlInfo {
                         shares: 0,
@@ -30,14 +34,18 @@ impl data::ConfigData {
                 },
             },
             balance: CpuInfo {
-                super_big_cpu_freq: None,
-                big_cpu_freq: FreqInfo { max: 0, min: 0 },
-                middle_cpu_freq: FreqInfo { max: 0, min: 0 },
-                small_cpu_freq: None,
-                super_big_cpu_governor: None,
-                big_cpu_governor: String::new(),
-                middle_cpu_governor: String::new(),
-                small_cpu_governor: None,
+                freqs: CpuFreqs {
+                    super_big_cpu: None,
+                    big_cpu: FreqInfo { max: 0, min: 0 },
+                    middle_cpu: FreqInfo { max: 0, min: 0 },
+                    small_cpu: None,
+                },
+                governor: Governor {
+                    super_big_cpu: None,
+                    big_cpu: String::new(),
+                    middle_cpu: String::new(),
+                    small_cpu: None,
+                },
                 cpuctl: CpuCtl {
                     top_app: CpuCtlInfo {
                         shares: 0,
@@ -50,14 +58,18 @@ impl data::ConfigData {
                 },
             },
             performance: CpuInfo {
-                super_big_cpu_freq: None,
-                big_cpu_freq: FreqInfo { max: 0, min: 0 },
-                middle_cpu_freq: FreqInfo { max: 0, min: 0 },
-                small_cpu_freq: None,
-                super_big_cpu_governor: None,
-                big_cpu_governor: String::new(),
-                middle_cpu_governor: String::new(),
-                small_cpu_governor: None,
+                freqs: CpuFreqs {
+                    super_big_cpu: None,
+                    big_cpu: FreqInfo { max: 0, min: 0 },
+                    middle_cpu: FreqInfo { max: 0, min: 0 },
+                    small_cpu: None,
+                },
+                governor: Governor {
+                    super_big_cpu: None,
+                    big_cpu: String::new(),
+                    middle_cpu: String::new(),
+                    small_cpu: None,
+                },
                 cpuctl: CpuCtl {
                     top_app: CpuCtlInfo {
                         shares: 0,
@@ -70,14 +82,18 @@ impl data::ConfigData {
                 },
             },
             fast: CpuInfo {
-                super_big_cpu_freq: None,
-                big_cpu_freq: FreqInfo { max: 0, min: 0 },
-                middle_cpu_freq: FreqInfo { max: 0, min: 0 },
-                small_cpu_freq: None,
-                super_big_cpu_governor: None,
-                big_cpu_governor: String::new(),
-                middle_cpu_governor: String::new(),
-                small_cpu_governor: None,
+                freqs: CpuFreqs {
+                    super_big_cpu: None,
+                    big_cpu: FreqInfo { max: 0, min: 0 },
+                    middle_cpu: FreqInfo { max: 0, min: 0 },
+                    small_cpu: None,
+                },
+                governor: Governor {
+                    super_big_cpu: None,
+                    big_cpu: String::new(),
+                    middle_cpu: String::new(),
+                    small_cpu: None,
+                },
                 cpuctl: CpuCtl {
                     top_app: CpuCtlInfo {
                         shares: 0,
