@@ -23,7 +23,7 @@ impl TopAppWatch {
     }
 
     /*
-     * 使用dumpsys activity 无法获取前台
+     * 使用dumpsys activity lur获取前台
      * 2025-05-24
      */
     pub fn dumpsys(&mut self) {
@@ -56,6 +56,9 @@ impl TopAppWatch {
         }
     }
 
+    /*
+     * 使用binder通讯获取
+     */
     pub fn binder(&mut self) {
         let dumper = loop {
             match Dumpsys::new("activity") {
