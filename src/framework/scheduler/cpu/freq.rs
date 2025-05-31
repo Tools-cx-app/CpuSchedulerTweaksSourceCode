@@ -82,97 +82,97 @@ impl CpuFreqs for Cpu {
         match mode {
             Mode::Powersave => {
                 big_freq.extend(&[
-                    self.config.powersave.big_cpu_freq.max,
-                    self.config.powersave.big_cpu_freq.min,
+                    self.config.powersave.freqs.big_cpu.max,
+                    self.config.powersave.freqs.big_cpu.min,
                 ]);
                 middle_freq.extend(&[
-                    self.config.powersave.middle_cpu_freq.max,
-                    self.config.powersave.middle_cpu_freq.min,
+                    self.config.powersave.freqs.middle_cpu.max,
+                    self.config.powersave.freqs.middle_cpu.min,
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.option_to_no(self.config.powersave.small_cpu_freq).max,
-                        self.option_to_no(self.config.powersave.small_cpu_freq).min,
+                        self.option_to_no(self.config.powersave.freqs.small_cpu).max,
+                        self.option_to_no(self.config.powersave.freqs.small_cpu).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.option_to_no(self.config.powersave.super_big_cpu_freq)
+                        self.option_to_no(self.config.powersave.freqs.super_big_cpu)
                             .max,
-                        self.option_to_no(self.config.powersave.super_big_cpu_freq)
+                        self.option_to_no(self.config.powersave.freqs.super_big_cpu)
                             .min,
                     ]);
                 }
             }
             Mode::Balance => {
                 big_freq.extend(&[
-                    self.config.balance.big_cpu_freq.max,
-                    self.config.balance.big_cpu_freq.min,
+                    self.config.balance.freqs.big_cpu.max,
+                    self.config.balance.freqs.big_cpu.min,
                 ]);
                 middle_freq.extend(&[
-                    self.config.balance.middle_cpu_freq.max,
-                    self.config.balance.middle_cpu_freq.min,
+                    self.config.balance.freqs.middle_cpu.max,
+                    self.config.balance.freqs.middle_cpu.min,
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.option_to_no(self.config.balance.small_cpu_freq).max,
-                        self.option_to_no(self.config.balance.small_cpu_freq).min,
+                        self.option_to_no(self.config.balance.freqs.small_cpu).max,
+                        self.option_to_no(self.config.balance.freqs.small_cpu).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.option_to_no(self.config.balance.super_big_cpu_freq)
+                        self.option_to_no(self.config.balance.freqs.super_big_cpu)
                             .max,
-                        self.option_to_no(self.config.balance.super_big_cpu_freq)
+                        self.option_to_no(self.config.balance.freqs.super_big_cpu)
                             .min,
                     ]);
                 }
             }
             Mode::Performance => {
                 big_freq.extend(&[
-                    self.config.performance.big_cpu_freq.max,
-                    self.config.performance.big_cpu_freq.min,
+                    self.config.performance.freqs.big_cpu.max,
+                    self.config.performance.freqs.big_cpu.min,
                 ]);
                 middle_freq.extend(&[
-                    self.config.performance.middle_cpu_freq.max,
-                    self.config.performance.middle_cpu_freq.min,
+                    self.config.performance.freqs.middle_cpu.max,
+                    self.config.performance.freqs.middle_cpu.min,
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.option_to_no(self.config.performance.small_cpu_freq)
+                        self.option_to_no(self.config.performance.freqs.small_cpu)
                             .max,
-                        self.option_to_no(self.config.performance.small_cpu_freq)
+                        self.option_to_no(self.config.performance.freqs.small_cpu)
                             .min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.option_to_no(self.config.performance.super_big_cpu_freq)
+                        self.option_to_no(self.config.performance.freqs.super_big_cpu)
                             .max,
-                        self.option_to_no(self.config.performance.super_big_cpu_freq)
+                        self.option_to_no(self.config.performance.freqs.super_big_cpu)
                             .min,
                     ]);
                 }
             }
             Mode::Fast => {
                 big_freq.extend(&[
-                    self.config.fast.big_cpu_freq.max,
-                    self.config.fast.big_cpu_freq.min,
+                    self.config.fast.freqs.big_cpu.max,
+                    self.config.fast.freqs.big_cpu.min,
                 ]);
                 middle_freq.extend(&[
-                    self.config.fast.middle_cpu_freq.max,
-                    self.config.fast.middle_cpu_freq.min,
+                    self.config.fast.freqs.middle_cpu.max,
+                    self.config.fast.freqs.middle_cpu.min,
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.option_to_no(self.config.fast.small_cpu_freq).max,
-                        self.option_to_no(self.config.fast.small_cpu_freq).min,
+                        self.option_to_no(self.config.fast.freqs.small_cpu).max,
+                        self.option_to_no(self.config.fast.freqs.small_cpu).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.option_to_no(self.config.fast.super_big_cpu_freq).max,
-                        self.option_to_no(self.config.fast.super_big_cpu_freq).min,
+                        self.option_to_no(self.config.fast.freqs.super_big_cpu).max,
+                        self.option_to_no(self.config.fast.freqs.super_big_cpu).min,
                     ]);
                 }
             }

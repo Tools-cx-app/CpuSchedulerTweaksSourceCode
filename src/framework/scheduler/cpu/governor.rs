@@ -81,51 +81,51 @@ impl CpuGovernor for Cpu {
          */
         match mode {
             Mode::Powersave => {
-                big_governor = self.config.powersave.big_cpu_governor.clone();
-                middle_governor = self.config.powersave.middle_cpu_governor.clone();
+                big_governor = self.config.powersave.governor.big_cpu.clone();
+                middle_governor = self.config.powersave.governor.middle_cpu.clone();
                 if has_small_big {
                     small_governor =
-                        self.option_to_string(self.config.powersave.small_cpu_governor.clone());
+                        self.option_to_string(self.config.powersave.governor.small_cpu.clone());
                 }
                 if has_super_big {
                     super_big_governor =
-                        self.option_to_string(self.config.powersave.super_big_cpu_governor.clone())
+                        self.option_to_string(self.config.powersave.governor.super_big_cpu.clone())
                 }
             }
             Mode::Balance => {
-                big_governor = self.config.balance.big_cpu_governor.clone();
-                middle_governor = self.config.balance.middle_cpu_governor.clone();
+                big_governor = self.config.balance.governor.big_cpu.clone();
+                middle_governor = self.config.balance.governor.middle_cpu.clone();
                 if has_small_big {
                     small_governor =
-                        self.option_to_string(self.config.balance.small_cpu_governor.clone());
+                        self.option_to_string(self.config.balance.governor.small_cpu.clone());
                 }
                 if has_super_big {
                     super_big_governor =
-                        self.option_to_string(self.config.balance.super_big_cpu_governor.clone())
+                        self.option_to_string(self.config.balance.governor.super_big_cpu.clone())
                 }
             }
             Mode::Performance => {
-                big_governor = self.config.performance.big_cpu_governor.clone();
-                middle_governor = self.config.performance.middle_cpu_governor.clone();
+                big_governor = self.config.performance.governor.big_cpu.clone();
+                middle_governor = self.config.performance.governor.middle_cpu.clone();
                 if has_small_big {
                     small_governor =
-                        self.option_to_string(self.config.performance.small_cpu_governor.clone());
+                        self.option_to_string(self.config.performance.governor.small_cpu.clone());
                 }
                 if has_super_big {
                     super_big_governor = self
-                        .option_to_string(self.config.performance.super_big_cpu_governor.clone())
+                        .option_to_string(self.config.performance.governor.super_big_cpu.clone())
                 }
             }
             Mode::Fast => {
-                big_governor = self.config.fast.big_cpu_governor.clone();
-                middle_governor = self.config.fast.middle_cpu_governor.clone();
+                big_governor = self.config.fast.governor.big_cpu.clone();
+                middle_governor = self.config.fast.governor.middle_cpu.clone();
                 if has_small_big {
                     small_governor =
-                        self.option_to_string(self.config.fast.small_cpu_governor.clone());
+                        self.option_to_string(self.config.fast.governor.small_cpu.clone());
                 }
                 if has_super_big {
                     super_big_governor =
-                        self.option_to_string(self.config.fast.super_big_cpu_governor.clone())
+                        self.option_to_string(self.config.fast.governor.super_big_cpu.clone())
                 }
             }
         }
