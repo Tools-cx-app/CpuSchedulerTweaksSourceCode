@@ -18,7 +18,7 @@ pub trait CpuFreqs {
 
 impl CpuFreqs for Cpu {
     /*
-     * cpu频率设置，mode为当前的模式，自动根据配置文件设置
+     * cpu频率设置
      * 2025-05-24
      */
     fn set_freq(&self, mode: Mode) {

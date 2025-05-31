@@ -88,6 +88,10 @@ impl Looper {
         }
     }
 
+    /*
+     * 进入looper
+     * 2025-05-31
+     */
     pub fn enter_looper(&mut self) -> Result<()> {
         let mut inotify = Inotify::init()?;
         let mut app_cache = Some(String::new());
