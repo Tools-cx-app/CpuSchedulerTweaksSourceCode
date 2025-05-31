@@ -108,8 +108,9 @@ impl Looper {
             inotify.read_events_blocking(&mut [0; 1024])?;
             self.cpu.load_config(self.config.clone());
             self.cpuctl.load_config(self.config.clone());
+            self.config = self.config.load_config();
             self.topapp.dump();
-
+            
             if DEBUG.load(Ordering::SeqCst) {
                 log::debug!("当前topapp: {}", self.topapp.get());
                 log::debug!("当前mode: {:?}", self.mode);
