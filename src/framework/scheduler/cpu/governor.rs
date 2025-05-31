@@ -61,7 +61,7 @@ impl CpuGovernor for Cpu {
         let has_small_big = small.map(|p| p.exists()).unwrap_or(false);
         let has_super_big = super_big.map(|p| p.exists()).unwrap_or(false);
 
-        if DEBUG.load(Ordering::SeqCst) {
+        if DEBUG.load(Ordering::Relaxed) {
             log::debug!("big簇: {}", big.display());
             log::debug!("middle簇: {}", middle.display());
             if let Some(s) = small {
