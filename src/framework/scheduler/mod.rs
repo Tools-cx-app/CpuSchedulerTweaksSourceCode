@@ -110,7 +110,7 @@ impl Looper {
             self.cpuctl.load_config(self.config.clone());
             self.config = self.config.load_config();
             self.topapp.dump();
-            
+
             if DEBUG.load(Ordering::Relaxed) {
                 log::debug!("当前topapp: {}", self.topapp.get());
                 log::debug!("当前mode: {:?}", self.mode);
