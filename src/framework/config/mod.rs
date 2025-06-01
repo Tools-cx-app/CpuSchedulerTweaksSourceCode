@@ -12,14 +12,14 @@ impl data::ConfigData {
             powersave: CpuInfo {
                 freqs: CpuFreqs {
                     super_big_cpu: None,
-                    big_cpu: FreqInfo { max: 0, min: 0 },
-                    middle_cpu: FreqInfo { max: 0, min: 0 },
+                    big_cpu: None,
+                    middle_cpu: None,
                     small_cpu: None,
                 },
                 governor: Governor {
                     super_big_cpu: None,
-                    big_cpu: String::new(),
-                    middle_cpu: String::new(),
+                    big_cpu: None,
+                    middle_cpu: None,
                     small_cpu: None,
                 },
                 cpuctl: CpuCtl {
@@ -36,14 +36,14 @@ impl data::ConfigData {
             balance: CpuInfo {
                 freqs: CpuFreqs {
                     super_big_cpu: None,
-                    big_cpu: FreqInfo { max: 0, min: 0 },
-                    middle_cpu: FreqInfo { max: 0, min: 0 },
+                    big_cpu: None,
+                    middle_cpu: None,
                     small_cpu: None,
                 },
                 governor: Governor {
                     super_big_cpu: None,
-                    big_cpu: String::new(),
-                    middle_cpu: String::new(),
+                    big_cpu: None,
+                    middle_cpu: None,
                     small_cpu: None,
                 },
                 cpuctl: CpuCtl {
@@ -60,14 +60,14 @@ impl data::ConfigData {
             performance: CpuInfo {
                 freqs: CpuFreqs {
                     super_big_cpu: None,
-                    big_cpu: FreqInfo { max: 0, min: 0 },
-                    middle_cpu: FreqInfo { max: 0, min: 0 },
+                    big_cpu: None,
+                    middle_cpu: None,
                     small_cpu: None,
                 },
                 governor: Governor {
                     super_big_cpu: None,
-                    big_cpu: String::new(),
-                    middle_cpu: String::new(),
+                    big_cpu: None,
+                    middle_cpu: None,
                     small_cpu: None,
                 },
                 cpuctl: CpuCtl {
@@ -84,14 +84,14 @@ impl data::ConfigData {
             fast: CpuInfo {
                 freqs: CpuFreqs {
                     super_big_cpu: None,
-                    big_cpu: FreqInfo { max: 0, min: 0 },
-                    middle_cpu: FreqInfo { max: 0, min: 0 },
+                    big_cpu: None,
+                    middle_cpu: None,
                     small_cpu: None,
                 },
                 governor: Governor {
                     super_big_cpu: None,
-                    big_cpu: String::new(),
-                    middle_cpu: String::new(),
+                    big_cpu: None,
+                    middle_cpu: None,
                     small_cpu: None,
                 },
                 cpuctl: CpuCtl {
@@ -107,8 +107,8 @@ impl data::ConfigData {
             },
             cpu_config: data::Cpu {
                 super_big: None,
-                big: 0,
-                middle: 0,
+                big: None,
+                middle: None,
                 small: None,
             },
             osm: String::new(),

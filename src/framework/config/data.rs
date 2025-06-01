@@ -25,16 +25,16 @@ pub struct CpuInfo {
 #[derive(Deserialize, Debug, Clone)]
 pub struct Governor {
     pub super_big_cpu: Option<String>,
-    pub big_cpu: String,
-    pub middle_cpu: String,
+    pub big_cpu: Option<String>,
+    pub middle_cpu: Option<String>,
     pub small_cpu: Option<String>,
 }
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct CpuFreqs {
     pub super_big_cpu: Option<FreqInfo>,
-    pub big_cpu: FreqInfo,
-    pub middle_cpu: FreqInfo,
+    pub big_cpu: Option<FreqInfo>,
+    pub middle_cpu: Option<FreqInfo>,
     pub small_cpu: Option<FreqInfo>,
 }
 #[derive(Deserialize, Debug, Clone, Copy, Default)]
@@ -46,8 +46,8 @@ pub struct FreqInfo {
 #[derive(Deserialize, Debug, Clone)]
 pub struct Cpu {
     pub super_big: Option<u16>,
-    pub big: u16,
-    pub middle: u16,
+    pub big: Option<u16>,
+    pub middle: Option<u16>,
     pub small: Option<u16>,
 }
 
