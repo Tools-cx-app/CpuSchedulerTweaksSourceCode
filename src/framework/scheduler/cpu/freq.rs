@@ -1,13 +1,14 @@
 use std::{
-    fs::{Permissions, set_permissions, write},
-    os::unix::fs::PermissionsExt,
     path::{Path, PathBuf},
     sync::atomic::Ordering,
 };
 
-use anyhow::{Context, Result};
+use anyhow::{Result};
 
-use crate::framework::scheduler::{DEBUG, Mode};
+use crate::{
+    framework::scheduler::{DEBUG, Mode},
+    utils::{files::write_with_locked, option_to_str},
+};
 
 use super::Cpu;
 
@@ -91,16 +92,14 @@ impl CpuFreqs for Cpu {
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.option_to_no(self.config.powersave.freqs.small_cpu).max,
-                        self.option_to_no(self.config.powersave.freqs.small_cpu).min,
+                        option_to_str(self.config.powersave.freqs.small_cpu).max,
+                        option_to_str(self.config.powersave.freqs.small_cpu).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.option_to_no(self.config.powersave.freqs.super_big_cpu)
-                            .max,
-                        self.option_to_no(self.config.powersave.freqs.super_big_cpu)
-                            .min,
+                        option_to_str(self.config.powersave.freqs.super_big_cpu).max,
+                        option_to_str(self.config.powersave.freqs.super_big_cpu).min,
                     ]);
                 }
             }
@@ -115,16 +114,14 @@ impl CpuFreqs for Cpu {
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.option_to_no(self.config.balance.freqs.small_cpu).max,
-                        self.option_to_no(self.config.balance.freqs.small_cpu).min,
+                        option_to_str(self.config.balance.freqs.small_cpu).max,
+                        option_to_str(self.config.balance.freqs.small_cpu).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.option_to_no(self.config.balance.freqs.super_big_cpu)
-                            .max,
-                        self.option_to_no(self.config.balance.freqs.super_big_cpu)
-                            .min,
+                        option_to_str(self.config.balance.freqs.super_big_cpu).max,
+                        option_to_str(self.config.balance.freqs.super_big_cpu).min,
                     ]);
                 }
             }
@@ -139,18 +136,14 @@ impl CpuFreqs for Cpu {
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.option_to_no(self.config.performance.freqs.small_cpu)
-                            .max,
-                        self.option_to_no(self.config.performance.freqs.small_cpu)
-                            .min,
+                        option_to_str(self.config.performance.freqs.small_cpu).max,
+                        option_to_str(self.config.performance.freqs.small_cpu).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.option_to_no(self.config.performance.freqs.super_big_cpu)
-                            .max,
-                        self.option_to_no(self.config.performance.freqs.super_big_cpu)
-                            .min,
+                        option_to_str(self.config.performance.freqs.super_big_cpu).max,
+                        option_to_str(self.config.performance.freqs.super_big_cpu).min,
                     ]);
                 }
             }
@@ -165,14 +158,14 @@ impl CpuFreqs for Cpu {
                 ]);
                 if has_small_big {
                     small_freq.extend(&[
-                        self.option_to_no(self.config.fast.freqs.small_cpu).max,
-                        self.option_to_no(self.config.fast.freqs.small_cpu).min,
+                        option_to_str(self.config.fast.freqs.small_cpu).max,
+                        option_to_str(self.config.fast.freqs.small_cpu).min,
                     ]);
                 }
                 if has_super_big {
                     super_big_freq.extend(&[
-                        self.option_to_no(self.config.fast.freqs.super_big_cpu).max,
-                        self.option_to_no(self.config.fast.freqs.super_big_cpu).min,
+                        option_to_str(self.config.fast.freqs.super_big_cpu).max,
+                        option_to_str(self.config.fast.freqs.super_big_cpu).min,
                     ]);
                 }
             }
@@ -204,14 +197,8 @@ impl CpuFreqs for Cpu {
             anyhow::bail!("无效的频率参数，需要最大和最小频率");
         }
 
-        set_permissions(&max, Permissions::from_mode(0o644)).context("无法设置最大频率权限")?;
-        write(&max, freq[0].to_string()).context("无法写入最大频率")?;
-        set_permissions(&max, Permissions::from_mode(0o400)).context("无法恢复最大频率权限")?;
-
-        set_permissions(&min, Permissions::from_mode(0o644)).context("无法设置最小频率权限")?;
-        write(&min, freq[1].to_string()).context("无法写入最小频率")?;
-        set_permissions(&min, Permissions::from_mode(0o400)).context("无法恢复最小频率权限")?;
-
+        let _ = write_with_locked(max, freq[0].to_string().as_str());
+        let _ = write_with_locked(min, freq[1].to_string().as_str());
         Ok(())
     }
 }

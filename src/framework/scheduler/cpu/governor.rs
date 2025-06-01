@@ -1,15 +1,16 @@
 #![allow(unused_assignments)]
 
 use std::{
-    fs::{Permissions, set_permissions, write},
-    os::unix::fs::PermissionsExt,
     path::{Path, PathBuf},
     sync::atomic::Ordering,
 };
 
-use anyhow::{Context, Result};
+use anyhow::{Result};
 
-use crate::framework::scheduler::{DEBUG, Mode};
+use crate::{
+    framework::scheduler::{DEBUG, Mode},
+    utils::{files::write_with_locked,option_to_str}
+};
 
 use super::Cpu;
 
@@ -85,23 +86,22 @@ impl CpuGovernor for Cpu {
                 middle_governor = self.config.powersave.governor.middle_cpu.clone();
                 if has_small_big {
                     small_governor =
-                        self.option_to_string(self.config.powersave.governor.small_cpu.clone());
+                        option_to_str(self.config.powersave.governor.small_cpu.clone());
                 }
                 if has_super_big {
                     super_big_governor =
-                        self.option_to_string(self.config.powersave.governor.super_big_cpu.clone())
+                        option_to_str(self.config.powersave.governor.super_big_cpu.clone())
                 }
             }
             Mode::Balance => {
                 big_governor = self.config.balance.governor.big_cpu.clone();
                 middle_governor = self.config.balance.governor.middle_cpu.clone();
                 if has_small_big {
-                    small_governor =
-                        self.option_to_string(self.config.balance.governor.small_cpu.clone());
+                    small_governor = option_to_str(self.config.balance.governor.small_cpu.clone());
                 }
                 if has_super_big {
                     super_big_governor =
-                        self.option_to_string(self.config.balance.governor.super_big_cpu.clone())
+                        option_to_str(self.config.balance.governor.super_big_cpu.clone())
                 }
             }
             Mode::Performance => {
@@ -109,23 +109,21 @@ impl CpuGovernor for Cpu {
                 middle_governor = self.config.performance.governor.middle_cpu.clone();
                 if has_small_big {
                     small_governor =
-                        self.option_to_string(self.config.performance.governor.small_cpu.clone());
+                        option_to_str(self.config.performance.governor.small_cpu.clone());
                 }
                 if has_super_big {
-                    super_big_governor = self
-                        .option_to_string(self.config.performance.governor.super_big_cpu.clone())
+                    super_big_governor = option_to_str(self.config.performance.governor.super_big_cpu.clone())
                 }
             }
             Mode::Fast => {
                 big_governor = self.config.fast.governor.big_cpu.clone();
                 middle_governor = self.config.fast.governor.middle_cpu.clone();
                 if has_small_big {
-                    small_governor =
-                        self.option_to_string(self.config.fast.governor.small_cpu.clone());
+                    small_governor = option_to_str(self.config.fast.governor.small_cpu.clone());
                 }
                 if has_super_big {
                     super_big_governor =
-                        self.option_to_string(self.config.fast.governor.super_big_cpu.clone())
+                        option_to_str(self.config.fast.governor.super_big_cpu.clone())
                 }
             }
         }
@@ -150,11 +148,7 @@ impl CpuGovernor for Cpu {
     fn write_freq(&self, path: &Path, gonvernor_content: String) -> Result<()> {
         let gonvernor = path.join("scaling_governor");
 
-        set_permissions(&gonvernor, Permissions::from_mode(0o644))
-            .context("无法设置最大频率权限")?;
-        write(&gonvernor, gonvernor_content).context("无法写入最大频率")?;
-        set_permissions(&gonvernor, Permissions::from_mode(0o400))
-            .context("无法恢复最大频率权限")?;
+       let _ = write_with_locked(&gonvernor, gonvernor_content.as_str());
         Ok(())
     }
 }
