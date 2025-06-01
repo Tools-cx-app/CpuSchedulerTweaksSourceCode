@@ -2,9 +2,10 @@ mod defs;
 mod framework;
 mod utils;
 
-use std::fs;
+use std::{fs, io::Write};
 
 use anyhow::{Context, Result};
+use env_logger::Builder;
 
 fn check() -> Result<()> {
     let procs = procfs::process::all_processes().context("无法获取进程列表")?;
@@ -28,11 +29,20 @@ fn check() -> Result<()> {
     Ok(())
 }
 
+fn init_logger() -> Result<()> {
+    let mut builder = Builder::new();
+
+    builder.format(|buf, record| {
+        let local_time = chrono::Local::now();
+        let time_str = local_time.format("%Y-%m-%d %H:%M:%S%.3f").to_string();
+
+        writeln!(buf, "[{}] [{}] {}", time_str, record.level(), record.args())
+    });
+    builder.filter_level(log::LevelFilter::Debug).init();
+    Ok(())
+}
 fn main() -> Result<()> {
-    simple_logger::SimpleLogger::new()
-        .with_local_timestamps()
-        .with_level(log::LevelFilter::Debug)
-        .init()?;
+    init_logger().context("初始化日志加载器失败")?;
     check()?;
     let _ = fs::write(
         "/dev/cpuset/background/cgroup.procs",

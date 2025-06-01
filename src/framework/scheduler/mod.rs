@@ -101,7 +101,11 @@ impl Looper {
             BINDER.store(true, Ordering::SeqCst);
         }
         if self.config.debug {
+            log::set_max_level(log::LevelFilter::Debug);
+            log::info!("日志等级为Debug");
             DEBUG.store(true, Ordering::SeqCst);
+        } else {
+            log::info!("日志等级为Info");
         }
 
         loop {
