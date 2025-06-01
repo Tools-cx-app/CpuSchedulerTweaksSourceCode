@@ -8,8 +8,10 @@ use anyhow::{Context, Result};
 
 pub fn write_with_locked<T: AsRef<Path>>(path: T, content: &str) -> Result<()> {
     let path = path.as_ref();
-    set_permissions(&path, Permissions::from_mode(0o644)).context("无法设置最大频率权限")?;
-    write(&path, content).context("无法写入最大频率")?;
-    set_permissions(&path, Permissions::from_mode(0o400)).context("无法恢复最大频率权限")?;
+    set_permissions(&path, Permissions::from_mode(0o644))
+        .context(format!("无法设置644权限:{}", path.display()))?;
+    write(&path, content).context(format!("无法写入{}:{}", content, path.display()))?;
+    set_permissions(&path, Permissions::from_mode(0o400))
+        .context(format!("无法设置400权限:{}", path.display()))?;
     Ok(())
 }
