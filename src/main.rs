@@ -38,7 +38,7 @@ fn init_logger() -> Result<()> {
 
         writeln!(buf, "[{}] [{}] {}", time_str, record.level(), record.args())
     });
-    builder.filter_level(log::LevelFilter::Debug).init();
+    builder.filter_level(log::LevelFilter::Info).init();
     Ok(())
 }
 fn main() -> Result<()> {
