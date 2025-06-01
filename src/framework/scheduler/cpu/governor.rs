@@ -5,11 +5,11 @@ use std::{
     sync::atomic::Ordering,
 };
 
-use anyhow::{Result};
+use anyhow::Result;
 
 use crate::{
     framework::scheduler::{DEBUG, Mode},
-    utils::{files::write_with_locked,option_to_str}
+    utils::{files::write_with_locked, option_to_str},
 };
 
 use super::Cpu;
@@ -112,7 +112,8 @@ impl CpuGovernor for Cpu {
                         option_to_str(self.config.performance.governor.small_cpu.clone());
                 }
                 if has_super_big {
-                    super_big_governor = option_to_str(self.config.performance.governor.super_big_cpu.clone())
+                    super_big_governor =
+                        option_to_str(self.config.performance.governor.super_big_cpu.clone())
                 }
             }
             Mode::Fast => {
@@ -148,7 +149,7 @@ impl CpuGovernor for Cpu {
     fn write_freq(&self, path: &Path, gonvernor_content: String) -> Result<()> {
         let gonvernor = path.join("scaling_governor");
 
-       let _ = write_with_locked(&gonvernor, gonvernor_content.as_str());
+        let _ = write_with_locked(&gonvernor, gonvernor_content.as_str());
         Ok(())
     }
 }

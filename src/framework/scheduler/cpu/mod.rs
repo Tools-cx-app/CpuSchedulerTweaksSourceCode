@@ -1,7 +1,7 @@
 pub mod freq;
 pub mod governor;
 
-use crate::framework::config::data::{ConfigData};
+use crate::framework::config::data::ConfigData;
 
 pub struct Cpu {
     config: ConfigData,

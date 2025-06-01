@@ -3,7 +3,7 @@ use std::{
     sync::atomic::Ordering,
 };
 
-use anyhow::{Result};
+use anyhow::Result;
 
 use crate::{
     framework::scheduler::{DEBUG, Mode},
