@@ -25,17 +25,19 @@ impl CpuGovernor for Cpu {
      * 2025-05-24
      */
     fn set_governor(&self, mode: Mode) {
-        let big_path = PathBuf::from(format!(
-            "/sys/devices/system/cpu/cpufreq/policy{}",
-            self.config.cpu_config.big
-        ));
-        let big = big_path.as_path();
+        let big_path = self
+            .config
+            .cpu_config
+            .big
+            .map(|id| PathBuf::from(format!("/sys/devices/system/cpu/cpufreq/policy{id}")));
+        let big = big_path.as_ref().map(|p| p.as_path());
 
-        let middle_path = PathBuf::from(format!(
-            "/sys/devices/system/cpu/cpufreq/policy{}",
-            self.config.cpu_config.middle
-        ));
-        let middle = middle_path.as_path();
+        let middle_path = self
+            .config
+            .cpu_config
+            .middle
+            .map(|id| PathBuf::from(format!("/sys/devices/system/cpu/cpufreq/policy{id}")));
+        let middle = middle_path.as_ref().map(|p| p.as_path());
 
         let small_path = self
             .config
@@ -51,20 +53,18 @@ impl CpuGovernor for Cpu {
             .map(|id| PathBuf::from(format!("/sys/devices/system/cpu/cpufreq/policy{id}")));
         let super_big = super_big_path.as_ref().map(|p| p.as_path());
 
-        if !big.exists() {
-            log::error!("CPU簇{}不存在", self.config.cpu_config.big);
-            return;
-        }
-        if !middle.exists() {
-            log::error!("CPU簇{}不存在", self.config.cpu_config.middle);
-            return;
-        }
+        let has_big = big.map(|p| p.exists()).unwrap_or(false);
+        let has_middle = middle.map(|p| p.exists()).unwrap_or(false);
         let has_small_big = small.map(|p| p.exists()).unwrap_or(false);
         let has_super_big = super_big.map(|p| p.exists()).unwrap_or(false);
 
         if DEBUG.load(Ordering::Relaxed) {
-            log::debug!("big簇: {}", big.display());
-            log::debug!("middle簇: {}", middle.display());
+            if let Some(b) = big {
+                log::debug!("big簇: {}", b.display());
+            }
+            if let Some(m) = middle {
+                log::debug!("middle簇: {}", m.display());
+            }
             if let Some(s) = small {
                 log::debug!("small簇: {}", s.display());
             }
@@ -82,8 +82,13 @@ impl CpuGovernor for Cpu {
          */
         match mode {
             Mode::Powersave => {
-                big_governor = self.config.powersave.governor.big_cpu.clone();
-                middle_governor = self.config.powersave.governor.middle_cpu.clone();
+                if has_big {
+                    big_governor = option_to_str(self.config.powersave.governor.big_cpu.clone());
+                }
+                if has_middle {
+                    middle_governor =
+                        option_to_str(self.config.powersave.governor.middle_cpu.clone());
+                }
                 if has_small_big {
                     small_governor =
                         option_to_str(self.config.powersave.governor.small_cpu.clone());
@@ -94,8 +99,13 @@ impl CpuGovernor for Cpu {
                 }
             }
             Mode::Balance => {
-                big_governor = self.config.balance.governor.big_cpu.clone();
-                middle_governor = self.config.balance.governor.middle_cpu.clone();
+                if has_big {
+                    big_governor = option_to_str(self.config.balance.governor.big_cpu.clone());
+                }
+                if has_middle {
+                    middle_governor =
+                        option_to_str(self.config.balance.governor.middle_cpu.clone());
+                }
                 if has_small_big {
                     small_governor = option_to_str(self.config.balance.governor.small_cpu.clone());
                 }
@@ -105,8 +115,13 @@ impl CpuGovernor for Cpu {
                 }
             }
             Mode::Performance => {
-                big_governor = self.config.performance.governor.big_cpu.clone();
-                middle_governor = self.config.performance.governor.middle_cpu.clone();
+                if has_big {
+                    big_governor = option_to_str(self.config.performance.governor.big_cpu.clone());
+                }
+                if has_middle {
+                    middle_governor =
+                        option_to_str(self.config.performance.governor.middle_cpu.clone());
+                }
                 if has_small_big {
                     small_governor =
                         option_to_str(self.config.performance.governor.small_cpu.clone());
@@ -117,8 +132,12 @@ impl CpuGovernor for Cpu {
                 }
             }
             Mode::Fast => {
-                big_governor = self.config.fast.governor.big_cpu.clone();
-                middle_governor = self.config.fast.governor.middle_cpu.clone();
+                if has_big {
+                    big_governor = option_to_str(self.config.fast.governor.big_cpu.clone());
+                }
+                if has_middle {
+                    middle_governor = option_to_str(self.config.fast.governor.middle_cpu.clone());
+                }
                 if has_small_big {
                     small_governor = option_to_str(self.config.fast.governor.small_cpu.clone());
                 }
@@ -128,8 +147,16 @@ impl CpuGovernor for Cpu {
                 }
             }
         }
-        let _ = self.write_freq(big, big_governor);
-        let _ = self.write_freq(middle, middle_governor);
+        if has_big {
+            if let Some(b) = big {
+                let _ = self.write_freq(b, big_governor);
+            }
+        }
+        if has_middle {
+            if let Some(m) = middle {
+                let _ = self.write_freq(m, middle_governor);
+            }
+        }
         if has_small_big {
             if let Some(s) = small {
                 let _ = self.write_freq(s, small_governor);

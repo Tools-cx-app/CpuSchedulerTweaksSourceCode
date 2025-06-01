@@ -23,17 +23,19 @@ impl CpuFreqs for Cpu {
      * 2025-05-24
      */
     fn set_freq(&self, mode: Mode) {
-        let big_path = PathBuf::from(format!(
-            "/sys/devices/system/cpu/cpufreq/policy{}",
-            self.config.cpu_config.big
-        ));
-        let big = big_path.as_path();
+        let big_path = self
+            .config
+            .cpu_config
+            .big
+            .map(|id| PathBuf::from(format!("/sys/devices/system/cpu/cpufreq/policy{id}")));
+        let big = big_path.as_ref().map(|p| p.as_path());
 
-        let middle_path = PathBuf::from(format!(
-            "/sys/devices/system/cpu/cpufreq/policy{}",
-            self.config.cpu_config.middle
-        ));
-        let middle = middle_path.as_path();
+        let middle_path = self
+            .config
+            .cpu_config
+            .middle
+            .map(|id| PathBuf::from(format!("/sys/devices/system/cpu/cpufreq/policy{id}")));
+        let middle = middle_path.as_ref().map(|p| p.as_path());
 
         let small_path = self
             .config
@@ -49,20 +51,18 @@ impl CpuFreqs for Cpu {
             .map(|id| PathBuf::from(format!("/sys/devices/system/cpu/cpufreq/policy{id}")));
         let super_big = super_big_path.as_ref().map(|p| p.as_path());
 
-        if !big.exists() {
-            log::error!("CPU簇{}不存在", self.config.cpu_config.big);
-            return;
-        }
-        if !middle.exists() {
-            log::error!("CPU簇{}不存在", self.config.cpu_config.middle);
-            return;
-        }
+        let has_big = big.map(|p| p.exists()).unwrap_or(false);
+        let has_middle = middle.map(|p| p.exists()).unwrap_or(false);
         let has_small_big = small.map(|p| p.exists()).unwrap_or(false);
         let has_super_big = super_big.map(|p| p.exists()).unwrap_or(false);
 
         if DEBUG.load(Ordering::Relaxed) {
-            log::debug!("big簇: {}", big.display());
-            log::debug!("middle簇: {}", middle.display());
+            if let Some(b) = big {
+                log::debug!("big簇: {}", b.display());
+            }
+            if let Some(m) = middle {
+                log::debug!("middle簇: {}", m.display());
+            }
             if let Some(s) = small {
                 log::debug!("small簇: {}", s.display());
             }
@@ -82,14 +82,18 @@ impl CpuFreqs for Cpu {
          */
         match mode {
             Mode::Powersave => {
-                big_freq.extend(&[
-                    self.config.powersave.freqs.big_cpu.max,
-                    self.config.powersave.freqs.big_cpu.min,
-                ]);
-                middle_freq.extend(&[
-                    self.config.powersave.freqs.middle_cpu.max,
-                    self.config.powersave.freqs.middle_cpu.min,
-                ]);
+                if has_big {
+                    big_freq.extend(&[
+                        option_to_str(self.config.powersave.freqs.big_cpu).max,
+                        option_to_str(self.config.powersave.freqs.big_cpu).min,
+                    ]);
+                }
+                if has_middle {
+                    middle_freq.extend(&[
+                        option_to_str(self.config.powersave.freqs.middle_cpu).max,
+                        option_to_str(self.config.powersave.freqs.middle_cpu).min,
+                    ]);
+                }
                 if has_small_big {
                     small_freq.extend(&[
                         option_to_str(self.config.powersave.freqs.small_cpu).max,
@@ -104,14 +108,18 @@ impl CpuFreqs for Cpu {
                 }
             }
             Mode::Balance => {
-                big_freq.extend(&[
-                    self.config.balance.freqs.big_cpu.max,
-                    self.config.balance.freqs.big_cpu.min,
-                ]);
-                middle_freq.extend(&[
-                    self.config.balance.freqs.middle_cpu.max,
-                    self.config.balance.freqs.middle_cpu.min,
-                ]);
+                if has_big {
+                    big_freq.extend(&[
+                        option_to_str(self.config.balance.freqs.big_cpu).max,
+                        option_to_str(self.config.balance.freqs.big_cpu).min,
+                    ]);
+                }
+                if has_middle {
+                    middle_freq.extend(&[
+                        option_to_str(self.config.balance.freqs.middle_cpu).max,
+                        option_to_str(self.config.balance.freqs.middle_cpu).min,
+                    ]);
+                }
                 if has_small_big {
                     small_freq.extend(&[
                         option_to_str(self.config.balance.freqs.small_cpu).max,
@@ -126,14 +134,18 @@ impl CpuFreqs for Cpu {
                 }
             }
             Mode::Performance => {
-                big_freq.extend(&[
-                    self.config.performance.freqs.big_cpu.max,
-                    self.config.performance.freqs.big_cpu.min,
-                ]);
-                middle_freq.extend(&[
-                    self.config.performance.freqs.middle_cpu.max,
-                    self.config.performance.freqs.middle_cpu.min,
-                ]);
+                if has_big {
+                    big_freq.extend(&[
+                        option_to_str(self.config.performance.freqs.big_cpu).max,
+                        option_to_str(self.config.performance.freqs.big_cpu).min,
+                    ]);
+                }
+                if has_middle {
+                    middle_freq.extend(&[
+                        option_to_str(self.config.performance.freqs.middle_cpu).max,
+                        option_to_str(self.config.performance.freqs.middle_cpu).min,
+                    ]);
+                }
                 if has_small_big {
                     small_freq.extend(&[
                         option_to_str(self.config.performance.freqs.small_cpu).max,
@@ -148,14 +160,18 @@ impl CpuFreqs for Cpu {
                 }
             }
             Mode::Fast => {
-                big_freq.extend(&[
-                    self.config.fast.freqs.big_cpu.max,
-                    self.config.fast.freqs.big_cpu.min,
-                ]);
-                middle_freq.extend(&[
-                    self.config.fast.freqs.middle_cpu.max,
-                    self.config.fast.freqs.middle_cpu.min,
-                ]);
+                if has_big {
+                    big_freq.extend(&[
+                        option_to_str(self.config.fast.freqs.big_cpu).max,
+                        option_to_str(self.config.fast.freqs.big_cpu).min,
+                    ]);
+                }
+                if has_middle {
+                    middle_freq.extend(&[
+                        option_to_str(self.config.fast.freqs.middle_cpu).max,
+                        option_to_str(self.config.fast.freqs.middle_cpu).min,
+                    ]);
+                }
                 if has_small_big {
                     small_freq.extend(&[
                         option_to_str(self.config.fast.freqs.small_cpu).max,
@@ -171,8 +187,16 @@ impl CpuFreqs for Cpu {
             }
         }
 
-        let _ = self.write_freq(big, big_freq);
-        let _ = self.write_freq(middle, middle_freq);
+        if has_big {
+            if let Some(b) = big {
+                let _ = self.write_freq(b, big_freq);
+            }
+        }
+        if has_middle {
+            if let Some(m) = middle {
+                let _ = self.write_freq(m, middle_freq);
+            }
+        }
         if has_small_big {
             if let Some(s) = small {
                 let _ = self.write_freq(s, small_freq);
