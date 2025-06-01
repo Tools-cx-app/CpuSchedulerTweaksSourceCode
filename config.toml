@@ -62,7 +62,7 @@ small_cpu = "schedutil"
 
 [fast.cpuctl]
 top_app = { shares = 0, uclamp = { max = 0, min = 0 } }
-foreground = { shares = 0 uclamp = { max = 0, min = 0 } }
+foreground = { shares = 0, uclamp = { max = 0, min = 0 } }
 
 [applist]
 "bin.mt.plus" = "powersave"
