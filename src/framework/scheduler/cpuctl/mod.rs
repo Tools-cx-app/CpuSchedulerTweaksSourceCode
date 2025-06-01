@@ -1,10 +1,6 @@
-use std::{
-    fs::{Permissions, set_permissions, write},
-    os::unix::fs::PermissionsExt,
-    path::Path,
-};
+use std::path::Path;
 
-use anyhow::{Context, Result};
+use anyhow::Result;
 
 use crate::{
     defs::TOP_APP_CPUCTL, framework::config::data::ConfigData, utils::files::write_with_locked,
