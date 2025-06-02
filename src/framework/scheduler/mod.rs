@@ -97,24 +97,24 @@ impl Looper {
         let mut app_cache = Some(String::new());
         inotify.watches().add("/dev/input", WatchMask::ACCESS)?;
 
-        if self.config.binder {
-            BINDER.store(true, Ordering::SeqCst);
-        }
-        if self.config.debug {
-            log::set_max_level(log::LevelFilter::Debug);
-            log::info!("日志等级为Debug");
-            DEBUG.store(true, Ordering::SeqCst);
-        } else {
-            log::set_max_level(log::LevelFilter::Info); // Explicitly set to Info
-            log::info!("日志等级为Info");
-        }
-
         loop {
             inotify.read_events_blocking(&mut [0; 1024])?;
             self.cpu.load_config(self.config.clone());
             self.cpuctl.load_config(self.config.clone());
             self.config = self.config.load_config();
             self.topapp.dump();
+
+            if self.config.binder {
+                BINDER.store(true, Ordering::SeqCst);
+            }
+            if self.config.debug {
+                log::set_max_level(log::LevelFilter::Debug);
+                log::info!("日志等级为Debug");
+                DEBUG.store(true, Ordering::SeqCst);
+            } else {
+                log::set_max_level(log::LevelFilter::Info);
+                log::info!("日志等级为Info");
+            }
 
             if DEBUG.load(Ordering::Relaxed) {
                 log::debug!("当前topapp: {}", self.topapp.get());
