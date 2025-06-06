@@ -95,7 +95,7 @@ fn create_daemon() {
                 .unwrap();
             loop {
                 if check_pid(pid, 0) {
-                    let mut buf =String::new();
+                    let mut buf = String::new();
                     file.read_to_string(&mut buf);
                     let re = Regex::new(r"(?m)^(description\s*=\s*).*$").unwrap();
 
