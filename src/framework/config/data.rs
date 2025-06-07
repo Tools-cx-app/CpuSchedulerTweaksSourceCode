@@ -5,6 +5,7 @@ use serde::Deserialize;
 #[derive(Deserialize, PartialEq, Debug, Clone)]
 pub struct ConfigData {
     pub osm: String,
+    pub io: Io,
     pub binder: bool,
     pub debug: bool,
     pub cpu_config: Cpu,
@@ -20,6 +21,12 @@ pub struct CpuInfo {
     pub freqs: CpuFreqs,
     pub governor: Governor,
     pub cpuctl: CpuCtl,
+}
+
+#[derive(Deserialize, PartialEq, Debug, Clone)]
+pub struct Io {
+    pub scheduler: String,
+    pub read_ahead: u16,
 }
 
 #[derive(Deserialize, PartialEq, Debug, Clone)]

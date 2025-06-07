@@ -4,6 +4,7 @@ mod dump;
 
 use std::{
     fs::write,
+    path::Path,
     process::Command,
     sync::atomic::{AtomicBool, Ordering},
 };
@@ -16,7 +17,11 @@ use glob::glob;
 use inotify::{Inotify, WatchMask};
 
 use super::config::data::ConfigData;
-use crate::{defs, framework::scheduler::dump::power::Power};
+use crate::{
+    defs::{self, SDC_READ_AHEAD, SDC_SCHEDULER},
+    framework::scheduler::dump::power::Power,
+    utils::files::write_with_locked,
+};
 
 static BINDER: AtomicBool = AtomicBool::new(false);
 static DEBUG: AtomicBool = AtomicBool::new(false);
@@ -97,6 +102,12 @@ impl Looper {
         let mut app_cache = Some(String::new());
         let mut config_cache = ConfigData::new();
         inotify.watches().add("/dev/input", WatchMask::ACCESS)?;
+
+        write_with_locked(Path::new(SDC_SCHEDULER), self.config.io.scheduler.as_str())?;
+        write_with_locked(
+            Path::new(SDC_READ_AHEAD),
+            self.config.io.read_ahead.to_string().as_str(),
+        )?;
 
         loop {
             inotify.read_events_blocking(&mut [0; 1024])?;

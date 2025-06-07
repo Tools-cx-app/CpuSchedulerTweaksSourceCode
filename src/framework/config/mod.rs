@@ -2,7 +2,7 @@ use std::{collections::HashMap, fs};
 
 use data::{CpuCtl, CpuCtlInfo, CpuCtlUclamp, CpuFreqs, CpuInfo, Governor};
 
-use crate::defs;
+use crate::{defs, framework::config::data::Io};
 
 pub mod data;
 
@@ -110,6 +110,10 @@ impl data::ConfigData {
                 big: None,
                 middle: None,
                 small: None,
+            },
+            io: Io {
+                scheduler: String::new(),
+                read_ahead: 0,
             },
             osm: String::new(),
             applist: HashMap::new(),
