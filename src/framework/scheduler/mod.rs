@@ -116,12 +116,6 @@ impl Looper {
                 log::info!("日志等级为Info");
             }
 
-            if DEBUG.load(Ordering::Relaxed) {
-                log::debug!("当前topapp: {}", self.topapp.get());
-                log::debug!("当前mode: {:?}", self.mode);
-                log::debug!("当前config: {:?}", self.config);
-            }
-
             for (app, mode) in self.config.applist.clone() {
                 if app_cache.clone().unwrap_or_default() != self.topapp.get()
                     && self.topapp.get() == app
