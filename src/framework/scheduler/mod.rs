@@ -16,7 +16,7 @@ use glob::glob;
 use inotify::{Inotify, WatchMask};
 
 use super::config::data::ConfigData;
-use crate::defs;
+use crate::{defs, framework::scheduler::dump::power::Power};
 
 static BINDER: AtomicBool = AtomicBool::new(false);
 static DEBUG: AtomicBool = AtomicBool::new(false);
@@ -32,7 +32,7 @@ pub enum Mode {
 pub struct Looper {
     cpu: Cpu,
     cpuctl: CpuCtl,
-    mode: Mode,
+    power: Power,
     config: ConfigData,
     topapp: TopAppWatch,
 }
@@ -42,7 +42,7 @@ impl Looper {
         Self {
             cpu: Cpu::new(),
             cpuctl: CpuCtl::new(),
-            mode: Mode::Balance,
+            power: Power::new(),
             config: ConfigData::new(),
             topapp: TopAppWatch::new(),
         }
@@ -111,6 +111,7 @@ impl Looper {
                 config_cache = self.config.clone();
                 log::info!("配置文件已重载");
             }
+            self.power.dump();
             self.topapp.dump();
 
             if self.config.binder {
@@ -126,7 +127,14 @@ impl Looper {
             }
 
             for (app, mode) in self.config.applist.clone() {
-                if app_cache.clone().unwrap_or_default() != self.topapp.get()
+                if self.power.state {
+                self.cpu
+                        .set_freq(Mode::Powersave);
+                    self.cpu
+                        .set_governor(Mode::Powersave);
+                    self.cpuctl
+                        .set_uclamp(Mode::Powersave);
+                } else if app_cache.clone().unwrap_or_default() != self.topapp.get()
                     && self.topapp.get() == app
                 {
                     log::info!("正在为{app}配置{mode}模式");
