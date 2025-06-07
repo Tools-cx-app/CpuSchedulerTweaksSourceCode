@@ -5,8 +5,6 @@ mod utils;
 use std::{
     fs::{self, OpenOptions},
     io::{Read, Write},
-    path::Path,
-    process::Command,
 };
 
 use anyhow::{Context, Result, anyhow};

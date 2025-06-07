@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fs};
 
-use data::{CpuCtl, CpuCtlInfo, CpuCtlUclamp, CpuFreqs, CpuInfo, FreqInfo, Governor};
+use data::{CpuCtl, CpuCtlInfo, CpuCtlUclamp, CpuFreqs, CpuInfo, Governor};
 
 use crate::defs;
 
