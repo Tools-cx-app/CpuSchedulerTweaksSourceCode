@@ -1,8 +1,8 @@
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const SDC_SCHEDULER: &str = "/sys/class/block/sdc/queue/scheduler";
 pub const SDC_READ_AHEAD: &str = "/sys/class/block/sdc/queue/read_ahead_kb";
-pub const CONFIG_PATH: &str = "/data/adb/modules/life_death_scheduler/config.toml";
-pub const MOD_PROP_PATH: &str = "/data/adb/modules/life_death_scheduler/module.prop";
+pub const CONFIG_PATH: &str = "/data/adb/modules/CpuSchedulerTweaks/config.toml";
+pub const MOD_PROP_PATH: &str = "/data/adb/modules/CpuSchedulerTweaks/module.prop";
 pub const BOOST_PATHS: [&str; 49] = [
     "/sys/power/pnpmgr/touch_boost",
     "/sys/power/pnpmgr/long_duration_touch_boost",
