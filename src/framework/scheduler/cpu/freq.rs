@@ -133,4 +133,3 @@ impl CpuFreqs for Cpu {
         Ok(())
     }
 }
-

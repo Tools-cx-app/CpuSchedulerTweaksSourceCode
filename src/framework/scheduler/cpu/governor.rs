@@ -81,4 +81,3 @@ impl CpuGovernor for Cpu {
         Ok(())
     }
 }
-

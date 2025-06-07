@@ -105,36 +105,45 @@ impl Looper {
                 self.cpu.load_config(self.config.clone());
                 self.cpuctl.load_config(self.config.clone());
                 config_cache = self.config.clone();
+                if self.config.binder {
+                    BINDER.store(true, Ordering::SeqCst);
+                }
+                if self.config.debug {
+                    log::set_max_level(log::LevelFilter::Debug);
+                    log::info!("日志等级为Debug");
+                    DEBUG.store(true, Ordering::SeqCst);
+                } else {
+                    log::set_max_level(log::LevelFilter::Info);
+                    log::info!("日志等级为Info");
+                }
             } else if config_cache != self.config.clone() {
                 self.cpu.load_config(self.config.clone());
                 self.cpuctl.load_config(self.config.clone());
                 config_cache = self.config.clone();
+                if self.config.binder {
+                    BINDER.store(true, Ordering::SeqCst);
+                }
+                if self.config.debug {
+                    log::set_max_level(log::LevelFilter::Debug);
+                    log::info!("日志等级为Debug");
+                    DEBUG.store(true, Ordering::SeqCst);
+                } else {
+                    log::set_max_level(log::LevelFilter::Info);
+                    log::info!("日志等级为Info");
+                }
                 log::info!("配置文件已重载");
             }
             self.power.dump();
             self.topapp.dump();
 
-            if self.config.binder {
-                BINDER.store(true, Ordering::SeqCst);
+            if self.power.state {
+                self.cpu.set_freq(Mode::Powersave);
+                self.cpu.set_governor(Mode::Powersave);
+                self.cpuctl.set_uclamp(Mode::Powersave);
+                break Ok(());
             }
-            if self.config.debug {
-                log::set_max_level(log::LevelFilter::Debug);
-                log::info!("日志等级为Debug");
-                DEBUG.store(true, Ordering::SeqCst);
-            } else {
-                log::set_max_level(log::LevelFilter::Info);
-                log::info!("日志等级为Info");
-            }
-
             for (app, mode) in self.config.applist.clone() {
-                if self.power.state {
-                self.cpu
-                        .set_freq(Mode::Powersave);
-                    self.cpu
-                        .set_governor(Mode::Powersave);
-                    self.cpuctl
-                        .set_uclamp(Mode::Powersave);
-                } else if app_cache.clone().unwrap_or_default() != self.topapp.get()
+                if app_cache.clone().unwrap_or_default() != self.topapp.get()
                     && self.topapp.get() == app
                 {
                     log::info!("正在为{app}配置{mode}模式");

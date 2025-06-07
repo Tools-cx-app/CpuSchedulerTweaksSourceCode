@@ -23,13 +23,29 @@ impl Cpu {
     pub fn load_config(&mut self, config: ConfigData) {
         self.config = config;
     }
-    
+
     pub fn get_cluster_paths(&self) -> ClusterPaths {
         ClusterPaths {
-            big: self.config.cpu_config.big.map(|id| format!("/sys/devices/system/cpu/cpufreq/policy{id}")),
-            middle: self.config.cpu_config.middle.map(|id| format!("/sys/devices/system/cpu/cpufreq/policy{id}")),
-            small: self.config.cpu_config.small.map(|id| format!("/sys/devices/system/cpu/cpufreq/policy{id}")),
-            super_big: self.config.cpu_config.super_big.map(|id| format!("/sys/devices/system/cpu/cpufreq/policy{id}")),
+            big: self
+                .config
+                .cpu_config
+                .big
+                .map(|id| format!("/sys/devices/system/cpu/cpufreq/policy{id}")),
+            middle: self
+                .config
+                .cpu_config
+                .middle
+                .map(|id| format!("/sys/devices/system/cpu/cpufreq/policy{id}")),
+            small: self
+                .config
+                .cpu_config
+                .small
+                .map(|id| format!("/sys/devices/system/cpu/cpufreq/policy{id}")),
+            super_big: self
+                .config
+                .cpu_config
+                .super_big
+                .map(|id| format!("/sys/devices/system/cpu/cpufreq/policy{id}")),
         }
     }
 }
@@ -45,10 +61,22 @@ impl ClusterPaths {
     // 检查路径存在性
     pub fn check_existence(&self) -> (bool, bool, bool, bool) {
         (
-            self.big.as_ref().map(|p| Path::new(p).exists()).unwrap_or(false),
-            self.middle.as_ref().map(|p| Path::new(p).exists()).unwrap_or(false),
-            self.small.as_ref().map(|p| Path::new(p).exists()).unwrap_or(false),
-            self.super_big.as_ref().map(|p| Path::new(p).exists()).unwrap_or(false),
+            self.big
+                .as_ref()
+                .map(|p| Path::new(p).exists())
+                .unwrap_or(false),
+            self.middle
+                .as_ref()
+                .map(|p| Path::new(p).exists())
+                .unwrap_or(false),
+            self.small
+                .as_ref()
+                .map(|p| Path::new(p).exists())
+                .unwrap_or(false),
+            self.super_big
+                .as_ref()
+                .map(|p| Path::new(p).exists())
+                .unwrap_or(false),
         )
     }
 

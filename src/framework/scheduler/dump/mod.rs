@@ -1,2 +1,2 @@
-pub mod topapps;
 pub mod power;
+pub mod topapps;
