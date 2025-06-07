@@ -67,7 +67,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt update
-          sudo apt install -y gcc-multilib
+          sudo apt install -y gcc-multilib patch
           cargo install cargo-ndk --locked
       
       # 构建项目
@@ -78,6 +78,18 @@ jobs:
           
           # 克隆模块仓库
           git clone --depth 1 https://github.com/Tools-cx-app/CpuSchedulerTweaks.git module
+          
+          if [ -d "patches" ]; then
+            echo "Applying patches from patches directory..."
+            cd module
+            for patch in ../patches/*.patch; do
+              echo "Applying patch: $patch"
+              patch -p1 < "$patch" || exit 1
+            done
+            cd ..
+          else
+            echo "No patches directory found, skipping patching"
+          fi
           
           # 构建发布版本
           cargo ndk -t arm64-v8a build -r

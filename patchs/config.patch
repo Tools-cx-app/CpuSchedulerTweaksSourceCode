@@ -1,0 +1,12 @@
+--- module/config.toml	2025-06-07 10:16:10.353917606 +0800
+@@ -3,6 +3,10 @@
+ binder = false
+ debug = false
+ 
++[io]
++scheduler = "bfq"
++read_ahead_kb = 10
++
+ [cpu_config]
+ big = 7
+ middle = 4
