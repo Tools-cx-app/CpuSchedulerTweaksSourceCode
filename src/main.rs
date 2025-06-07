@@ -96,10 +96,10 @@ fn create_daemon() {
             loop {
                 if check_pid(pid, 0) {
                     let mut buf = String::new();
-                    file.read_to_string(&mut buf);
+                    let _ = file.read_to_string(&mut buf);
                     let re = Regex::new(r"(?m)^(description\s*=\s*).*$").unwrap();
 
-                    file.write(
+                    let _ = file.write(
                         re.replace_all(&buf.clone(), |caps: &regex::Captures| {
                             format!(
                                 "{}{}",
@@ -112,10 +112,10 @@ fn create_daemon() {
                     std::process::exit(-4);
                 } else {
                     let mut buf = String::new();
-                    file.read_to_string(&mut buf);
+                    let _ = file.read_to_string(&mut buf);
                     let re = Regex::new(r"(?m)^(description\s*=\s*).*$").unwrap();
 
-                    file.write(
+                    let _ = file.write(
                         re.replace_all(&buf.clone(), |caps: &regex::Captures| {
                             format!(
                                 "{}{}",
