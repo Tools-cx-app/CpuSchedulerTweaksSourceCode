@@ -150,7 +150,7 @@ impl Looper {
             if self.power.state {
                 self.cpu.set_freq(Mode::Powersave);
                 self.cpu.set_governor(Mode::Powersave);
-                self.cpuctl.set_uclamp(Mode::Powersave);
+                self.cpuctl.set_uclamp(Mode::Powersave)?;
                 break Ok(());
             }
             for (app, mode) in self.config.applist.clone() {
@@ -160,7 +160,7 @@ impl Looper {
                     log::info!("正在为{app}配置{mode}模式");
                     self.cpu.set_freq(self.switch_mode(mode.as_str()));
                     self.cpu.set_governor(self.switch_mode(mode.as_str()));
-                    self.cpuctl.set_uclamp(self.switch_mode(mode.as_str()));
+                    self.cpuctl.set_uclamp(self.switch_mode(mode.as_str()))?;
                     app_cache = Some(app);
                 } else {
                     self.cpu
@@ -168,7 +168,7 @@ impl Looper {
                     self.cpu
                         .set_governor(self.switch_mode(self.config.osm.as_str()));
                     self.cpuctl
-                        .set_uclamp(self.switch_mode(self.config.osm.as_str()));
+                        .set_uclamp(self.switch_mode(self.config.osm.as_str()))?;
                 }
             }
         }
