@@ -80,7 +80,7 @@ fn create_daemon() {
 
     match unsafe { fork() } {
         -1 => {
-            eprintln!("fork失败");
+            log::error!("fork失败");
             std::process::exit(-2);
         }
         0 => {
