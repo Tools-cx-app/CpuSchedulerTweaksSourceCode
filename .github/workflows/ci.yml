@@ -7,46 +7,88 @@ jobs:
   build:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    env:
+      NDK_HOME: ${{ github.workspace }}/ndk
+      CARGO_TARGET_DIR: target
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      
       - name: Generate VERSION and COMMIT
         run: |
           commit=$(git rev-list --count --all)
           version=$((commit + 100))
           echo VERSION=$version >> $GITHUB_ENV
           echo COMMIT=$commit >> $GITHUB_ENV
-      - name: Setup ndk
+      
+      # 缓存NDK
+      - name: Cache NDK
+        uses: actions/cache@v4
+        id: cache-ndk
+        with:
+          path: ${{ env.NDK_HOME }}
+          key: ndk-${{ runner.os }}-${{ hashFiles('.github/workflows/*.yml') }}
+          restore-keys: |
+            ndk-${{ runner.os }}-
+      
+      # 按需安装NDK
+      - name: Setup NDK
+        if: steps.cache-ndk.outputs.cache-hit != 'true'
         run: |
-          ndk_url=$(wget -qO- https://github.com/android/ndk/releases/latest | grep -e 'https://dl.google.com/android/repository/android-ndk-.*-linux.zip' | sed -n 's/.*<a href="\([^"]*\)".*/\1/p')
-          wget -O ndk.zip $ndk_url -nv
-          mkdir -p ~/ndk_temp
-          unzip ndk.zip -d ~/ndk_temp 2>&1 > /dev/null
-          mv ~/ndk_temp/*/* ~/ndk_temp
-      - name: Setup rust toolchains
+          mkdir -p ${{ env.NDK_HOME }}
+          ndk_url=$(curl -sL https://developer.android.com/ndk/downloads | grep -Eo 'https://dl.google.com/android/repository/android-ndk-r[0-9]{2}[a-z]?-linux.zip' | head -1)
+          wget -O ndk.zip "$ndk_url" -nv
+          unzip -q ndk.zip -d ${{ env.NDK_HOME }}
+          mv ${{ env.NDK_HOME }}/*/* ${{ env.NDK_HOME }}  # 移除嵌套目录
+          rm ndk.zip
+      
+      # 缓存Rust依赖
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        id: cache-cargo
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ${{ env.CARGO_TARGET_DIR }}
+          key: cargo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-
+      
+      # Rust工具链设置
+      - name: Setup Rust toolchains
         run: |
           rustup default nightly
           rustup target add aarch64-linux-android
           rustup component add rust-src
-          rustup update
-      - name: Install cargo ndk
-        run: cargo install cargo-ndk
-      - name: Other deps
+      
+      # 安装构建依赖
+      - name: Install build dependencies
         run: |
           sudo apt update
-          sudo apt install gcc-multilib -y
+          sudo apt install -y gcc-multilib
+          cargo install cargo-ndk --locked
+      
+      # 构建项目
       - name: Build
         run: |
-          export ANDROID_NDK_HOME=$(realpath ~/ndk_temp)
-          export ANDROID_NDK_ROOT=$ANDROID_NDK_HOME
-          git clone https://github.com/Tools-cx-app/CpuSchedulerTweaks.git module
+          export ANDROID_NDK_HOME=${{ env.NDK_HOME }}
+          export ANDROID_NDK_ROOT=${{ env.NDK_HOME }}
+          
+          # 克隆模块仓库
+          git clone --depth 1 https://github.com/Tools-cx-app/CpuSchedulerTweaks.git module
+          
+          # 构建发布版本
           cargo ndk -t arm64-v8a build -r
+          
+          # 准备模块包
           cp target/aarch64-linux-android/release/CpuSchedulerTweaks module/
           rm -rf module/.git
           cd module/
           zip -r ../CpuSchedulerTweaks.zip .
-          rm -rf ~/ndk_temp
+      
+      # 上传结果
       - name: Upload
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
