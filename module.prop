@@ -1,6 +1,6 @@
 # id 只能填 字母 数字 半角符号
-id=life_death_scheduler
-name=life-death-scheduler
+id=CpuSchedulerTweaks
+name=CpuSchedulerTweaks
 version=1.6
 versionCode=238
 author=生于生时，亡于亡刻

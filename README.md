@@ -1,7 +1,7 @@
 
 <div align="center">
 
-# **life-death-scheduler**
+# **CpuSchedulerTweaks**
 
 ### Android CPU 智能调度器 - 生死之间的性能平衡
 
@@ -16,21 +16,21 @@
 [rust-badge]: https://img.shields.io/badge/Language-Rust-orange.svg?style=for-the-badge&logo=rust
 [rust-url]: https://www.rust-lang.org/
 [version-badge]: https://img.shields.io/badge/Version-1.5.0-blue.svg?style=for-the-badge
-[version-url]: https://github.com/Tools-cx-app/life-death-scheduler/releases/latest
-[release-badge]: https://img.shields.io/github/v/release/Tools-cx-app/life-death-scheduler?style=for-the-badge&logo=rust
-[release-url]: https://github.com/Tools-cx-app/life-death-scheduler-release/releases/latest
-[download-badge]: https://img.shields.io/github/downloads/Tools-cx-app/life-death-scheduler/total?style=for-the-badge
-[download-url]: https://github.com/Tools-cx-app/life-death-scheduler-release/releases/latest
+[version-url]: https://github.com/Tools-cx-app/CpuSchedulerTweaks/releases/latest
+[release-badge]: https://img.shields.io/github/v/release/Tools-cx-app/CpuSchedulerTweaks?style=for-the-badge&logo=rust
+[release-url]: https://github.com/Tools-cx-app/CpuSchedulerTweaks-release/releases/latest
+[download-badge]: https://img.shields.io/github/downloads/Tools-cx-app/CpuSchedulerTweaks/total?style=for-the-badge
+[download-url]: https://github.com/Tools-cx-app/CpuSchedulerTweaks-release/releases/latest
 [telegram-badge]: https://img.shields.io/badge/Group-blue?style=for-the-badge&logo=telegram&label=Telegram
-[telegram-url]: https://t.me/ld_scheduler
+[telegram-url]: https://t.me/CpuSchedulerTweaks
 
 ## **简介**
 
-> 在性能与功耗的生死边缘，寻找完美平衡。`Life-Death-Scheduler` 是一个高性能的 Android CPU 动态调度器，通过智能识别前台应用并实时调整 CPU 策略，在保证流畅体验的同时最大化电池续航
+> `CpuSchedulerTweaks` 是一个高性能的 Android CPU 动态调度器，通过智能识别前台应用并实时调整 CPU 策略，在保证流畅体验的同时最大化电池续航
 
-- ### **什么是`life-death-scheduler`?**
+- ### **什么是`CpuSchedulerTweaks`?**
 
-  - `life-death-scheduler`是运行在用户态的智能 CPU 调度器实现，基于 Rust 语言开发，具有极佳的性能和兼容性优势
+  - `CpuSchedulerTweaks`是运行在用户态的智能 CPU 调度器实现，基于 Rust 语言开发，具有极佳的性能和兼容性优势
 
 ## **自定义(配置)**
 
@@ -73,7 +73,7 @@
   - **`"package"` = `"mode"`**
 
     - `package`: 字符串，应用包名
-    - `mode`: 字符串，该应用使用的性能模式，`life-death-scheduler`会在检测到该应用时自动切换到对应模式
+    - `mode`: 字符串，该应用使用的性能模式，`CpuSchedulerTweaks`会在检测到该应用时自动切换到对应模式
 
 - ### **模式(`powersave` / `balance` / `performance` / `fast`)说明:**
 
