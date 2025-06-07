@@ -133,4 +133,8 @@ impl data::ConfigData {
         };
         toml
     }
+
+    pub fn is_emtpy(&self) -> bool {
+        self.osm.is_empty()
+    }
 }

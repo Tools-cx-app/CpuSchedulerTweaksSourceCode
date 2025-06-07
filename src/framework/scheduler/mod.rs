@@ -95,13 +95,22 @@ impl Looper {
     pub fn enter_looper(&mut self) -> Result<()> {
         let mut inotify = Inotify::init()?;
         let mut app_cache = Some(String::new());
+        let mut config_cache = ConfigData::new();
         inotify.watches().add("/dev/input", WatchMask::ACCESS)?;
 
         loop {
             inotify.read_events_blocking(&mut [0; 1024])?;
-            self.cpu.load_config(self.config.clone());
-            self.cpuctl.load_config(self.config.clone());
             self.config = self.config.load_config();
+            if config_cache.clone().is_emtpy() {
+                self.cpu.load_config(self.config.clone());
+                self.cpuctl.load_config(self.config.clone());
+                config_cache = self.config.clone();
+            } else if config_cache != self.config.clone() {
+                self.cpu.load_config(self.config.clone());
+                self.cpuctl.load_config(self.config.clone());
+                config_cache = self.config.clone();
+                log::info!("配置文件已重载");
+            }
             self.topapp.dump();
 
             if self.config.binder {
