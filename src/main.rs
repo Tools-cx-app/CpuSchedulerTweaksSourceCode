@@ -5,12 +5,14 @@ mod utils;
 use std::{
     fs::{self, OpenOptions},
     io::{Read, Write},
+    path::Path,
+    process::Command,
 };
 
 use anyhow::{Context, Result, anyhow};
 use defs::MOD_PROP_PATH;
 use env_logger::Builder;
-use libc::{STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO, close, fork, kill, setsid, umask};
+use libc::{fork, kill, setsid, umask};
 use regex::Regex;
 
 fn check() -> Result<()> {
@@ -85,7 +87,7 @@ fn create_daemon() {
         }
         0 => {
             if let Err(e) = daemon() {
-                log::error!("daemon启动失败");
+                log::error!("daemon启动失败:{}", e);
                 std::process::exit(-3);
             }
             let mut file = OpenOptions::new()
