@@ -93,7 +93,7 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
           COMMIT_MESSAGE: |+
-            #ci_${{ env.COMMIT }}
+            \\#ci_${{ env.COMMIT }}
             Commit count: ${{ env.COMMIT }}
             Version: ${{ env.VERSION }}
             New push
