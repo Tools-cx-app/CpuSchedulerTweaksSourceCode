@@ -22,26 +22,13 @@ jobs:
           echo VERSION=$version >> $GITHUB_ENV
           echo COMMIT=$commit >> $GITHUB_ENV
       
-      # 缓存NDK
-      - name: Cache NDK
-        uses: actions/cache@v4
-        id: cache-ndk
-        with:
-          path: ${{ env.NDK_HOME }}
-          key: ndk-${{ runner.os }}-${{ hashFiles('.github/workflows/*.yml') }}
-          restore-keys: |
-            ndk-${{ runner.os }}-
-      
-      # 按需安装NDK
-      - name: Setup NDK
-        if: steps.cache-ndk.outputs.cache-hit != 'true'
+      - name: Setup ndk
         run: |
-          mkdir -p ${{ env.NDK_HOME }}
-          ndk_url=$(curl -sL https://developer.android.com/ndk/downloads | grep -Eo 'https://dl.google.com/android/repository/android-ndk-r[0-9]{2}[a-z]?-linux.zip' | head -1)
-          wget -O ndk.zip "$ndk_url" -nv
-          unzip -q ndk.zip -d ${{ env.NDK_HOME }}
-          mv ${{ env.NDK_HOME }}/*/* ${{ env.NDK_HOME }}  # 移除嵌套目录
-          rm ndk.zip
+          ndk_url=$(wget -qO- https://github.com/android/ndk/releases/latest | grep -e 'https://dl.google.com/android/repository/android-ndk-.*-linux.zip' | sed -n 's/.*<a href="\([^"]*\)".*/\1/p')
+          wget -O ndk.zip $ndk_url -nv
+          mkdir -p ~/ndk_temp
+          unzip ndk.zip -d ~/ndk_temp 2>&1 > /dev/null
+          mv ~/ndk_temp/*/* ~/ndk_temp
       
       # 缓存Rust依赖
       - name: Cache Rust dependencies
