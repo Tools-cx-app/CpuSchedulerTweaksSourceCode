@@ -24,7 +24,7 @@ use crate::{
 };
 
 static BINDER: AtomicBool = AtomicBool::new(false);
-static DEBUG: AtomicBool = AtomicBool::new(false);
+static DEBUG: AtomicBool = AtomicBool::new(true);
 
 #[derive(Debug, Clone, Copy)]
 pub enum Mode {
@@ -147,11 +147,11 @@ impl Looper {
             self.power.dump();
             self.topapp.dump();
 
-            if self.power.state {
+            if !self.power.state {
                 self.cpu.set_freq(Mode::Powersave);
                 self.cpu.set_governor(Mode::Powersave);
                 self.cpuctl.set_uclamp(Mode::Powersave)?;
-                break Ok(());
+                continue;
             }
             for (app, mode) in self.config.applist.clone() {
                 if app_cache.clone().unwrap_or_default() != self.topapp.get()
