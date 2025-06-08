@@ -4,7 +4,7 @@ use anyhow::Result;
 
 use super::Cpu;
 use crate::{
-    framework::scheduler::{DEBUG, Mode},
+    framework::scheduler::Mode,
     utils::{files::write_with_locked, option_to_str},
 };
 
