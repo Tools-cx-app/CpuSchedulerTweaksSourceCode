@@ -27,10 +27,6 @@ impl data::ConfigData {
                         shares: 0,
                         uclamp: CpuCtlUclamp { max: 0, min: 0 },
                     },
-                    /*foreground: CpuCtlInfo {
-                        shares: 0,
-                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
-                    },*/
                 },
             },
             balance: CpuInfo {
@@ -51,10 +47,6 @@ impl data::ConfigData {
                         shares: 0,
                         uclamp: CpuCtlUclamp { max: 0, min: 0 },
                     },
-                    /*foreground: CpuCtlInfo {
-                        shares: 0,
-                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
-                    },*/
                 },
             },
             performance: CpuInfo {
@@ -75,10 +67,6 @@ impl data::ConfigData {
                         shares: 0,
                         uclamp: CpuCtlUclamp { max: 0, min: 0 },
                     },
-                    /*foreground: CpuCtlInfo {
-                        shares: 0,
-                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
-                    },*/
                 },
             },
             fast: CpuInfo {
@@ -99,10 +87,6 @@ impl data::ConfigData {
                         shares: 0,
                         uclamp: CpuCtlUclamp { max: 0, min: 0 },
                     },
-                    /*foreground: CpuCtlInfo {
-                        shares: 0,
-                        uclamp: CpuCtlUclamp { max: 0, min: 0 },
-                    },*/
                 },
             },
             cpu_config: data::Cpu {

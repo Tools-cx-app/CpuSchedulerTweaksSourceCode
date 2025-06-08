@@ -61,7 +61,6 @@ pub struct Cpu {
 #[derive(Deserialize, PartialEq, Debug, Clone)]
 pub struct CpuCtl {
     pub top_app: CpuCtlInfo,
-    //pub foreground: CpuCtlInfo,
 }
 
 #[derive(Deserialize, PartialEq, Debug, Clone)]
