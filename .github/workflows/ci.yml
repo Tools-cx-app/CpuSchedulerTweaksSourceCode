@@ -39,22 +39,9 @@ jobs:
           mkdir -p ${{ env.NDK_HOME }}
           ndk_url=$(curl -sL https://developer.android.com/ndk/downloads | grep -Eo 'https://dl.google.com/android/repository/android-ndk-r[0-9]{2}[a-z]?-linux.zip' | head -1)
           wget -O ndk.zip "$ndk_url" -nv
-          
-          # 创建临时目录解压
-          temp_dir=$(mktemp -d)
-          unzip -q ndk.zip -d "$temp_dir"
-          
-          # 查找解压后的实际NDK目录
-          ndk_dir=$(find "$temp_dir" -maxdepth 1 -type d -name "android-ndk-*" | head -1)
-          
-          if [ -z "$ndk_dir" ]; then
-            echo "::error::Failed to find NDK directory in extracted files"
-            exit 1
-          fi
-          
-          # 移动内容到NDK_HOME
-          mv "$ndk_dir"/* ${{ env.NDK_HOME }}
-          rm -rf "$temp_dir" ndk.zip
+          unzip -q ndk.zip -d ${{ env.NDK_HOME }}
+          mv ${{ env.NDK_HOME }}/*/* ${{ env.NDK_HOME }}  # 移除嵌套目录
+          rm ndk.zip
       
       # 缓存Rust依赖
       - name: Cache Rust dependencies
