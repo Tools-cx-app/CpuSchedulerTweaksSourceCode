@@ -22,10 +22,6 @@ impl CpuGovernor for Cpu {
         let clusters = self.get_cluster_paths();
         let (has_big, has_middle, has_small, has_super_big) = clusters.check_existence();
 
-        if DEBUG.load(Ordering::Relaxed) {
-            clusters.debug_print();
-        }
-
         let get_governor = |cluster: &str| match mode {
             Mode::Powersave => match cluster {
                 "big" => option_to_str(self.config.powersave.governor.big_cpu.clone()),

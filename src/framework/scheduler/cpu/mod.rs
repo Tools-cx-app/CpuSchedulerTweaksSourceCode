@@ -79,20 +79,4 @@ impl ClusterPaths {
                 .unwrap_or(false),
         )
     }
-
-    // 调试打印
-    pub fn debug_print(&self) {
-        if let Some(b) = &self.big {
-            log::debug!("big簇: {}", b);
-        }
-        if let Some(m) = &self.middle {
-            log::debug!("middle簇: {}", m);
-        }
-        if let Some(s) = &self.small {
-            log::debug!("small簇: {}", s);
-        }
-        if let Some(sb) = &self.super_big {
-            log::debug!("super_big簇: {}", sb);
-        }
-    }
 }
