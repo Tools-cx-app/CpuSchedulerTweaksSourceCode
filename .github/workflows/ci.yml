@@ -60,8 +60,8 @@ jobs:
       # 构建项目
       - name: Build
         run: |
-          export ANDROID_NDK_HOME=${{ env.NDK_HOME }}
-          export ANDROID_NDK_ROOT=${{ env.NDK_HOME }}
+          export ANDROID_NDK_HOME=~/ndk_temp
+          export ANDROID_NDK_ROOT=~/ndk_temp
           
           # 克隆模块仓库
           git clone --depth 1 https://github.com/Tools-cx-app/CpuSchedulerTweaks.git module
