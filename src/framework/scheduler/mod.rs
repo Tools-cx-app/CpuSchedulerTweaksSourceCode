@@ -24,7 +24,6 @@ use crate::{
 };
 
 static BINDER: AtomicBool = AtomicBool::new(false);
-static DEBUG: AtomicBool = AtomicBool::new(true);
 
 #[derive(Debug, Clone, Copy)]
 pub enum Mode {
@@ -122,7 +121,6 @@ impl Looper {
                 if self.config.debug {
                     log::set_max_level(log::LevelFilter::Debug);
                     log::info!("日志等级为Debug");
-                    DEBUG.store(true, Ordering::SeqCst);
                 } else {
                     log::set_max_level(log::LevelFilter::Info);
                     log::info!("日志等级为Info");
