@@ -153,8 +153,7 @@ fn main() -> Result<()> {
         "/dev/cpuset/background/cgroup.procs",
         std::process::id().to_string(),
     );
-    log::info!("life-death-scheduler v{}", defs::VERSION);
-    log::info!("life-death-scheduler正在启动");
+    log::info!("CpuSchedulerTweaks v{}", defs::VERSION);
     let mut framework = crate::framework::scheduler::Looper::new();
     framework.init();
     framework.enter_looper()?;
