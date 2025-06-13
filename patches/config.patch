@@ -5,7 +5,7 @@
  
 +[io]
 +scheduler = "bfq"
-+read_ahead_kb = 10
++read_ahead = 10
 +
  [cpu_config]
  big = 7
