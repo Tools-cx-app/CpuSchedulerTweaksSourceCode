@@ -64,7 +64,7 @@ jobs:
           export ANDROID_NDK_ROOT=~/ndk_temp
           
           # 克隆模块仓库
-          git clone --depth 1 https://github.com/Tools-cx-app/CpuSchedulerTweaks.git module
+          # git clone --depth 1 https://github.com/Tools-cx-app/CpuSchedulerTweaks.git module
           
           if [ -d "patches" ]; then
             echo "Applying patches from patches directory..."
