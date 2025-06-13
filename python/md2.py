@@ -15,7 +15,7 @@ for i in range(len(parts)):
         parts[i] = re.sub(f"([{re.escape(special_chars)}])", r"\\\1", parts[i])
         
         # 额外处理 # 字符（确保所有 # 都被转义）
-        parts[i] = re.sub(r"(?<!\\)#", r"\\#", parts[i])
+        parts[i] = re.sub(r"#", r"\\#", parts[i])
 
 # 重新组合并处理换行
 result = "".join(parts).replace("\n", "\\n")
