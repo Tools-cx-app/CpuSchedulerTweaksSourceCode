@@ -3,8 +3,9 @@ mod framework;
 mod utils;
 
 use std::{
-    fs::{self, OpenOptions},
+    fs::{self, OpenOptions, create_dir_all},
     io::{Read, Write},
+    path::{Path, PathBuf},
 };
 
 use anyhow::{Context, Result, anyhow};
@@ -12,6 +13,8 @@ use defs::MOD_PROP_PATH;
 use env_logger::Builder;
 use libc::{fork, kill, setsid, umask};
 use regex::Regex;
+
+use crate::utils::files::write_with_locked;
 
 fn check() -> Result<()> {
     let procs = procfs::process::all_processes().context("无法获取进程列表")?;
@@ -145,14 +148,22 @@ fn create_daemon() {
     }
 }
 
+fn init_cpuset() -> Result<()> {
+    let path = PathBuf::from(defs::CPUSET).join("CpuSchedulerTweaks");
+
+    create_dir_all(path.clone())?;
+    log::info!("创建Cpuset成功");
+    write_with_locked(path.join("cpus"), "0-1")?;
+    write_with_locked(path.join("cpu_exclusive"), "0")?;
+
+    write_with_locked(path.join("tasks"), std::process::id().to_string().as_str())?;
+    Ok(())
+}
 fn main() -> Result<()> {
     init_logger().context("初始化日志加载器失败")?;
     check()?;
     create_daemon();
-    let _ = fs::write(
-        "/dev/cpuset/background/cgroup.procs",
-        std::process::id().to_string(),
-    );
+    init_cpuset()?;
     log::info!("CpuSchedulerTweaks v{}", defs::VERSION);
     let mut framework = crate::framework::scheduler::Looper::new();
     framework.init();
