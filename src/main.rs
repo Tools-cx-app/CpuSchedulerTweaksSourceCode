@@ -143,6 +143,7 @@ fn create_daemon() {
 
                     fs::write(MOD_PROP_PATH, new_content.as_bytes()).unwrap();
                 }
+                std::thread::sleep(std::time::Duration::from_secs(1));
             }
         }
         _ => {}
