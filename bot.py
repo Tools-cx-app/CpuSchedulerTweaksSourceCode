@@ -29,7 +29,7 @@ async def send_document_async():
             document=f,
             filename=os.path.basename(file_path),
             caption=escaped_message,
-            parse_mode=ParseMode.MARKDOWN_V2,
+            parse_mode=ParseMode.MARKDOWN,
             message_thread_id=5  # 话题ID
         )
 
