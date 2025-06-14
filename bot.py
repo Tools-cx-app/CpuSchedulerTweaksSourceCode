@@ -1,5 +1,6 @@
 import os
 import re
+import asyncio
 from telegram import Bot
 from telegram.constants import ParseMode
 
@@ -8,7 +9,8 @@ def escape_markdown_v2(text):
     pattern = r'([_*\[\]()~`>#+\-=|{}.!])'
     return re.sub(pattern, r'\\\1', text)
 
-def main():
+async def send_document_async():
+    """异步发送文档"""
     # 从环境变量获取配置
     bot_token = os.environ['BOT_TOKEN']
     chat_id = os.environ['CHAT_ID']
@@ -23,14 +25,18 @@ def main():
     
     # 发送文档
     with open(file_path, 'rb') as f:
-        bot.send_document(
+        await bot.send_document(
             chat_id=chat_id,
             document=f,
             filename=os.path.basename(file_path),
             caption=escaped_message,
             parse_mode=ParseMode.MARKDOWN_V2,
-            message_thread_id=5  # 话题ID (与原脚本一致)
+            message_thread_id=5  # 话题ID
         )
+
+def main():
+    """主函数运行异步任务"""
+    asyncio.run(send_document_async())
 
 if __name__ == '__main__':
     main()
