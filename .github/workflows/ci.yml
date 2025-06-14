@@ -93,8 +93,9 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
           COMMIT_MESSAGE: |+
-            Commit count: ${{ env.COMMIT }}
-            Version: ${{ env.VERSION }}
+            ci_${{ env.COMMIT }}
+            commits: ${{ env.COMMIT }}
+            version: ${{ env.VERSION }}
             New push
             ```
             ${{ github.event.head_commit.message }}
