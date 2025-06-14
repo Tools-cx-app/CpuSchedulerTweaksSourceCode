@@ -149,33 +149,10 @@ fn create_daemon() {
     }
 }
 
-fn init_cpuset() -> Result<()> {
-    let path = PathBuf::from(defs::CPUSET).join("CpuSchedulerTweaks");
-
-    create_dir_all(path.clone())?;
-    Command::new("mount")
-        .args([
-            "-t",
-            "tmpfs",
-            "-o",
-            "rw,seclabel,nosuid,relatime,size=3782660k,nr_inodes=945665,mode=755",
-            "tmpfs",
-            &path.join("cpus").to_string_lossy(),
-        ])
-        .output()?;
-
-    write_with_locked(path.join("cpus"), "0-1")?;
-    write_with_locked(path.join("cpu_exclusive"), "0")?;
-    write_with_locked(path.join("tasks"), std::process::id().to_string().as_str())?;
-
-    log::info!("创建Cpuset成功");
-    Ok(())
-}
 fn main() -> Result<()> {
     init_logger().context("初始化日志加载器失败")?;
     check()?;
     create_daemon();
-    init_cpuset()?;
     log::info!("CpuSchedulerTweaks v{}", defs::VERSION);
     let mut framework = crate::framework::scheduler::Looper::new();
     framework.init();
