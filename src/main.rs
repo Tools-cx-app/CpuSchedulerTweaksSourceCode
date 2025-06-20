@@ -50,7 +50,14 @@ fn init_logger() -> Result<()> {
         let local_time = chrono::Local::now();
         let time_str = local_time.format("%Y-%m-%d %H:%M:%S%.3f").to_string();
 
-        writeln!(buf, "[{}] [{}] {}", time_str, record.level(), record.args())
+        writeln!(
+            buf,
+            "[{}] [{}] {} {}",
+            time_str,
+            record.level(),
+            record.target(),
+            record.args()
+        )
     });
     builder.filter_level(log::LevelFilter::Info).init();
     Ok(())
