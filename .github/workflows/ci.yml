@@ -18,7 +18,7 @@ jobs:
       - name: Generate VERSION and COMMIT
         run: |
           commit=$(git rev-list --count --all)
-          version=$((commit + 100))
+          version=$((commit + 1000))
           echo VERSION=$version >> $GITHUB_ENV
           echo COMMIT=$commit >> $GITHUB_ENV
       
