@@ -16,7 +16,12 @@ pub fn set_current_priority(pid: u32, level: i32) -> Result<()> {
         .into());
     }
 
+    #[cfg(android)]
+    let result = unsafe { setpriority(pid as i32, 0, level) };
+
+    #[cfg(unix)]
     let result = unsafe { setpriority(pid, 0, level) };
+
     if result == 0 {
         Ok(())
     } else {
