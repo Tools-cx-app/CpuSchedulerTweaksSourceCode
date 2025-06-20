@@ -55,5 +55,5 @@ pub const BOOST_PATHS: [&str; 49] = [
     "/sys/class/input_booster/*",
     "/proc/sys/walt/input_boost/*",
 ];
-pub const RESET_TIME: std::time::Duration = std::time::Duration::from_secs(1);
+pub const RESET_TIME: std::time::Duration = std::time::Duration::from_millis(500);
 pub const TOP_APP_CPUCTL: &str = "/dev/cpuctl/top-app/";
