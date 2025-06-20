@@ -28,7 +28,7 @@ impl Power {
                         break String::from_utf8_lossy(&o.stdout).to_string();
                     }
                     Err(e) => {
-                        log::error!("无法获取前台应用:{e}");
+                        log::error!("无法获取屏幕状态:{e}");
                         std::thread::sleep(Duration::from_secs(1));
                     }
                 }
