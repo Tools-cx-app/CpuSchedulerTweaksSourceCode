@@ -2,7 +2,6 @@ use std::{
     fs::{Permissions, set_permissions, write},
     os::unix::fs::PermissionsExt,
     path::Path,
-    process::Command,
 };
 
 use anyhow::{Context, Result};

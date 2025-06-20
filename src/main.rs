@@ -3,10 +3,9 @@ mod framework;
 mod utils;
 
 use std::{
-    fs::{self, OpenOptions, create_dir_all},
+    fs,
     io::{Read, Write},
     os::raw::c_void,
-    path::{Path, PathBuf},
     process::Command,
 };
 
@@ -16,10 +15,7 @@ use env_logger::Builder;
 use libc::{c_int, fork, kill, setsid, umask};
 use regex::Regex;
 
-use crate::{
-    defs::{GET_KERNELSU_VERSION, KERNEL_SU_OPTION, RESET_TIME},
-    utils::files::write_with_locked,
-};
+use crate::defs::{GET_KERNELSU_VERSION, KERNEL_SU_OPTION, RESET_TIME};
 
 fn check() -> Result<()> {
     let procs = procfs::process::all_processes().context("无法获取进程列表")?;
