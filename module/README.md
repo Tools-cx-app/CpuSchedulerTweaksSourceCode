@@ -75,6 +75,17 @@
     - `package`: 字符串，应用包名
     - `mode`: 字符串，该应用使用的性能模式，`CpuSchedulerTweaks`会在检测到该应用时自动切换到对应模式
 
+- ### IO调整(io)说明:
+  - **schedutil**
+
+    类型: String
+    IO的调速器，在/sys/class/block/sdc/queue/scheduler
+
+  - **read_ahead**
+
+  类型: u16
+  不建议修改
+
 - ### **模式(`powersave` / `balance` / `performance` / `fast`)说明:**
 
   - #### **模式切换:**
