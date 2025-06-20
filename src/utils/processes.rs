@@ -16,10 +16,10 @@ pub fn set_current_priority(pid: u32, level: i32) -> Result<()> {
         .into());
     }
 
-    #[cfg(android)]
+    #[cfg(target_os = "android")]
     let result = unsafe { setpriority(pid as i32, 0, level) };
 
-    #[cfg(unix)]
+    #[cfg(target_os = "linux")]
     let result = unsafe { setpriority(pid, 0, level) };
 
     if result == 0 {
