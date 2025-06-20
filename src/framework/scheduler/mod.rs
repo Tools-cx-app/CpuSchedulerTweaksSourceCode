@@ -20,7 +20,10 @@ use super::config::data::ConfigData;
 use crate::{
     defs::{self, SDC_READ_AHEAD, SDC_SCHEDULER},
     framework::scheduler::dump::power::Power,
-    utils::files::write_with_locked,
+    utils::{
+        files::write_with_locked,
+        processes::{get_pid, set_current_priority},
+    },
 };
 
 static BINDER: AtomicBool = AtomicBool::new(false);
@@ -107,6 +110,9 @@ impl Looper {
             Path::new(SDC_READ_AHEAD),
             self.config.io.read_ahead.to_string().as_str(),
         )?;
+
+        let surfaceflinger_pid = get_pid("surfaceflinger")?;
+        set_current_priority(surfaceflinger_pid, -20)?;
 
         loop {
             inotify.read_events_blocking(&mut [0; 1024])?;
