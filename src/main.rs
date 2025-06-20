@@ -5,6 +5,7 @@ mod utils;
 use std::{
     fs::{self, OpenOptions, create_dir_all},
     io::{Read, Write},
+    os::raw::c_void,
     path::{Path, PathBuf},
     process::Command,
 };
@@ -12,10 +13,13 @@ use std::{
 use anyhow::{Context, Result, anyhow};
 use defs::MOD_PROP_PATH;
 use env_logger::Builder;
-use libc::{fork, kill, setsid, umask};
+use libc::{SYS_truncate, c_int, fork, kill, setsid, umask};
 use regex::Regex;
 
-use crate::{defs::RESET_TIME, utils::files::write_with_locked};
+use crate::{
+    defs::{GET_KERNELSU_VERSION, KERNEL_SU_OPTION, RESET_TIME},
+    utils::files::write_with_locked,
+};
 
 fn check() -> Result<()> {
     let procs = procfs::process::all_processes().context("无法获取进程列表")?;
@@ -150,11 +154,48 @@ fn create_daemon() {
     }
 }
 
+fn ksuctl(cmd: c_int, arg1: *mut c_void, arg2: *mut c_void) -> bool {
+    unsafe {
+        let mut result: u32 = 0;
+        // 调用 prctl 系统调用
+        libc::syscall(
+            libc::SYS_prctl,
+            KERNEL_SU_OPTION as libc::c_ulong,
+            cmd as libc::c_ulong,
+            arg1 as libc::c_ulong,
+            arg2 as libc::c_ulong,
+            &mut result as *mut u32 as libc::c_ulong,
+        );
+        result == KERNEL_SU_OPTION
+    }
+}
+
+fn get_kernelsu_version() -> c_int {
+    let mut version: c_int = -1;
+    ksuctl(
+        GET_KERNELSU_VERSION,
+        &mut version as *mut c_int as *mut c_void,
+        std::ptr::null_mut(),
+    );
+    version
+}
+
 fn main() -> Result<()> {
     init_logger().context("初始化日志加载器失败")?;
     check()?;
     create_daemon();
     log::info!("CpuSchedulerTweaks v{}", defs::VERSION);
+    let ksu_version = get_kernelsu_version();
+    let magisk_version = match Command::new("magisk").arg("-V").output() {
+        Ok(o) => String::from_utf8_lossy(&o.stdout).to_string(),
+        Err(_) => String::new(),
+    };
+    if ksu_version != -1 {
+        log::info!("KernelSU Kernel版本:{}", ksu_version);
+    }
+    if !magisk_version.is_empty() {
+        log::info!("Magisk版本:{}", magisk_version);
+    }
     let mut framework = crate::framework::scheduler::Looper::new();
     framework.init();
     framework.enter_looper()?;

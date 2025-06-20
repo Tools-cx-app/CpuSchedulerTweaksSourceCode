@@ -1,3 +1,5 @@
+use libc::c_int;
+
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const SDC_SCHEDULER: &str = "/sys/class/block/sdc/queue/scheduler";
 pub const SDC_READ_AHEAD: &str = "/sys/class/block/sdc/queue/read_ahead_kb";
@@ -57,3 +59,5 @@ pub const BOOST_PATHS: [&str; 49] = [
 ];
 pub const RESET_TIME: std::time::Duration = std::time::Duration::from_millis(500);
 pub const TOP_APP_CPUCTL: &str = "/dev/cpuctl/top-app/";
+pub const GET_KERNELSU_VERSION: c_int = 2;
+pub const KERNEL_SU_OPTION: u32 = 0xDEADBEEF;
