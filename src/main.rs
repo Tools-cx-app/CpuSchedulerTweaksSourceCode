@@ -15,7 +15,7 @@ use env_logger::Builder;
 use libc::{fork, kill, setsid, umask};
 use regex::Regex;
 
-use crate::utils::files::write_with_locked;
+use crate::{defs::RESET_TIME, utils::files::write_with_locked};
 
 fn check() -> Result<()> {
     let procs = procfs::process::all_processes().context("无法获取进程列表")?;
@@ -143,7 +143,7 @@ fn create_daemon() {
 
                     fs::write(MOD_PROP_PATH, new_content.as_bytes()).unwrap();
                 }
-                std::thread::sleep(std::time::Duration::from_secs(1));
+                std::thread::sleep(RESET_TIME);
             }
         }
         _ => {}
