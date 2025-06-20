@@ -8,6 +8,7 @@ pub struct ConfigData {
     pub io: Io,
     pub binder: bool,
     pub debug: bool,
+    pub app_launch_boost: bool,
     pub cpu_config: Cpu,
     pub powersave: CpuInfo,
     pub balance: CpuInfo,

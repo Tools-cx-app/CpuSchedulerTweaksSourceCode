@@ -154,6 +154,11 @@ impl Looper {
                 if app_cache.clone().unwrap_or_default() != self.topapp.get()
                     && self.topapp.get() == app
                 {
+                    if self.config.app_launch_boost {
+                        self.cpu.set_freq(Mode::Fast);
+                        self.cpu.set_governor(Mode::Fast);
+                        std::thread::sleep(std::time::Duration::from_secs(2));
+                    }
                     log::info!("正在为{app}配置{mode}模式");
                     self.cpu.set_freq(self.switch_mode(mode.as_str()));
                     self.cpu.set_governor(self.switch_mode(mode.as_str()));

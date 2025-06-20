@@ -99,6 +99,7 @@ impl data::ConfigData {
                 scheduler: String::new(),
                 read_ahead: 0,
             },
+            app_launch_boost: true,
             osm: String::new(),
             applist: HashMap::new(),
             binder: false,

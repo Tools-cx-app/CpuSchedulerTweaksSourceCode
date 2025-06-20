@@ -3,6 +3,7 @@
  binder = false
  debug = false
  
++ app_launch_boost = true
 +[io]
 +scheduler = "bfq"
 +read_ahead = 10
