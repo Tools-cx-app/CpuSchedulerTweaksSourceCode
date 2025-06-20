@@ -13,7 +13,7 @@ use std::{
 use anyhow::{Context, Result, anyhow};
 use defs::MOD_PROP_PATH;
 use env_logger::Builder;
-use libc::{SYS_truncate, c_int, fork, kill, setsid, umask};
+use libc::{c_int, fork, kill, setsid, umask};
 use regex::Regex;
 
 use crate::{
