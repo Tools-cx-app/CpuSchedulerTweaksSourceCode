@@ -11,7 +11,7 @@ pub fn set_current_priority(pid: u32, level: i32) -> Result<()> {
     if level < PRIO_MIN || level > PRIO_MAX {
         return Err(io::Error::new(
             io::ErrorKind::InvalidInput,
-            format!("Priority must be between {} and {}", PRIO_MIN, PRIO_MAX),
+            format!("优先级必须介于 {} 和 {} 之间", PRIO_MIN, PRIO_MAX),
         )
         .into());
     }
