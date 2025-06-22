@@ -102,7 +102,6 @@ impl data::ConfigData {
             app_launch_boost: true,
             osm: String::new(),
             applist: HashMap::new(),
-            binder: false,
             debug: false,
         };
         s.load_config()

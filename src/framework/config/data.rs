@@ -6,7 +6,6 @@ use serde::Deserialize;
 pub struct ConfigData {
     pub osm: String,
     pub io: Io,
-    pub binder: bool,
     pub debug: bool,
     pub app_launch_boost: bool,
     pub cpu_config: Cpu,

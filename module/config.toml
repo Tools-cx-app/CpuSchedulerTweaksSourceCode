@@ -1,6 +1,5 @@
 osm = "powersave"
 
-binder = false
 debug = false
 app_launch_boost = true
 
