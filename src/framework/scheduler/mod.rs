@@ -111,9 +111,9 @@ impl Looper {
             self.config.io.read_ahead.to_string().as_str(),
         )?;
 
-        let surfaceflinger_pid = get_pid("surfaceflinger")?;
+        /*let surfaceflinger_pid = get_pid("surfaceflinger")?;
         set_current_priority(surfaceflinger_pid, -20)?;
-        set_current_priority(std::process::id() as u32, 10)?;
+        set_current_priority(std::process::id() as u32, 10)?;*/
 
         loop {
             inotify.read_events_blocking(&mut [0; 1024])?;
