@@ -1,9 +1,9 @@
 use std::io;
 
 use anyhow::{Context, Result, anyhow};
-use libc::{PRIO_MAX, PRIO_MIN, setpriority};
+use libc::{PRIO_MAX, PRIO_MIN, PRIO_PROCESS, setpriority};
 
-/// 设置当前进程优先级
+/// 设置进程优先级
 /// pid: 目标id
 /// level: 目标优先级 (-20 到 19)
 pub fn set_current_priority(pid: u32, level: i32) -> Result<()> {
@@ -17,10 +17,10 @@ pub fn set_current_priority(pid: u32, level: i32) -> Result<()> {
     }
 
     #[cfg(target_os = "android")]
-    let result = unsafe { setpriority(pid as i32, 0, level) };
+    let result = unsafe { setpriority(PRIO_PROCESS, pid, level) };
 
     #[cfg(target_os = "linux")]
-    let result = unsafe { setpriority(pid, 0, level) };
+    let result = unsafe { setpriority(PRIO_PROCESS, pid, level) };
 
     if result == 0 {
         Ok(())
