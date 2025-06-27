@@ -3,6 +3,7 @@ mod cpuctl;
 mod dump;
 
 use std::{
+    fmt,
     fs::write,
     path::Path,
     process::Command,
@@ -42,6 +43,16 @@ pub struct Looper {
     topapp: TopAppWatch,
 }
 
+impl fmt::Display for Mode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Mode::Powersave => write!(f, "powersave"),
+            Mode::Balance => write!(f, "balance"),
+            Mode::Performance => write!(f, "performance"),
+            Mode::Fast => write!(f, "fast"),
+        }
+    }
+}
 impl Looper {
     pub fn new() -> Self {
         Self {
@@ -153,23 +164,22 @@ impl Looper {
                 if app_cache.clone().unwrap_or_default() != self.topapp.get()
                     && self.topapp.get() == app
                 {
+                    let mode = self.switch_mode(mode.as_str());
                     if self.config.app_launch_boost {
                         self.cpu.set_freq(Mode::Fast);
                         self.cpu.set_governor(Mode::Fast);
                         std::thread::sleep(std::time::Duration::from_secs(2));
                     }
                     log::info!("正在为{app}配置{mode}模式");
-                    self.cpu.set_freq(self.switch_mode(mode.as_str()));
-                    self.cpu.set_governor(self.switch_mode(mode.as_str()));
-                    self.cpuctl.set_uclamp(self.switch_mode(mode.as_str()))?;
+                    self.cpu.set_freq(mode);
+                    self.cpu.set_governor(mode);
+                    self.cpuctl.set_uclamp(mode)?;
                     app_cache = Some(app);
                 } else {
-                    self.cpu
-                        .set_freq(self.switch_mode(self.config.osm.as_str()));
-                    self.cpu
-                        .set_governor(self.switch_mode(self.config.osm.as_str()));
-                    self.cpuctl
-                        .set_uclamp(self.switch_mode(self.config.osm.as_str()))?;
+                    let mode = self.switch_mode(self.config.osm.as_str());
+                    self.cpu.set_freq(mode);
+                    self.cpu.set_governor(mode);
+                    self.cpuctl.set_uclamp(mode)?;
                 }
             }
         }
