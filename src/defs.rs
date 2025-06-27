@@ -1,6 +1,7 @@
+use const_format::concatcp;
 use libc::c_int;
 
-pub const VERSION: &str = env!("CARGO_PKG_VERSION");
+pub const VERSION: &str = include_str!(concat!(env!("OUT_DIR"), "/VERSION"));
 pub const SDC_SCHEDULER: &str = "/sys/class/block/sdc/queue/scheduler";
 pub const SDC_READ_AHEAD: &str = "/sys/class/block/sdc/queue/read_ahead_kb";
 pub const CPUSET: &str = "/dev/cpuset/";
