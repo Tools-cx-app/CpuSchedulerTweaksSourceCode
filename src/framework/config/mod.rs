@@ -1,8 +1,6 @@
-use std::{collections::HashMap, fs};
+use std::fs;
 
-use data::{CpuCtl, CpuCtlInfo, CpuCtlUclamp, CpuFreqs, CpuInfo, Governor};
-
-use crate::{defs, framework::config::data::Io};
+use crate::defs;
 
 pub mod data;
 

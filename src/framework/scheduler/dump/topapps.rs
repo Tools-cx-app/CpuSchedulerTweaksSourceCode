@@ -1,8 +1,4 @@
-use std::{
-    process::Command,
-    sync::atomic::Ordering,
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
 use crate::defs::RESET_TIME;
 use dumpsys_rs::Dumpsys;

@@ -2,13 +2,7 @@ mod cpu;
 mod cpuctl;
 mod dump;
 
-use std::{
-    fmt,
-    fs::write,
-    path::Path,
-    process::Command,
-    sync::atomic::{AtomicBool, Ordering},
-};
+use std::{fmt, fs::write, path::Path, process::Command};
 
 use anyhow::Result;
 use cpu::{Cpu, freq::CpuFreqs, governor::CpuGovernor};
