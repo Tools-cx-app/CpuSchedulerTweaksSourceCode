@@ -2,7 +2,12 @@ mod cpu;
 mod cpuctl;
 mod dump;
 
-use std::{fmt, fs::write, path::Path, process::Command};
+use std::{
+    fmt,
+    fs::{self, write},
+    path::Path,
+    process::Command,
+};
 
 use anyhow::Result;
 use cpu::{Cpu, freq::CpuFreqs, governor::CpuGovernor};
@@ -108,7 +113,12 @@ impl Looper {
         let mut config_cache = ConfigData::new();
         inotify.watches().add("/dev/input", WatchMask::ACCESS)?;
 
-        write_with_locked(Path::new(SDC_SCHEDULER), self.config.io.scheduler.as_str())?;
+        let sdc_scheduler = fs::read_to_string(SDC_SCHEDULER)?;
+        if sdc_scheduler.contains(&self.config.io.scheduler) {
+            write_with_locked(Path::new(SDC_SCHEDULER), self.config.io.scheduler.as_str())?;
+        } else {
+            log::warn!("io.scheduler配置项错误");
+        }
         write_with_locked(
             Path::new(SDC_READ_AHEAD),
             self.config.io.read_ahead.to_string().as_str(),
