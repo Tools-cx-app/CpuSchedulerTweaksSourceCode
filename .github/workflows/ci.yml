@@ -102,7 +102,12 @@ jobs:
           COMMIT_MESSAGE: ${{ format('{0}', github.event.head_commit.message) }}
 =======
           COMMIT_MESSAGE: |+
+<<<<<<< HEAD
             Commit count: ${{ env.COMMIT }}
+=======
+            Commit sha: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            [ci_${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id)
+>>>>>>> parent of 2d2ab55 (fix(ci): 修复ci文件)
             Version: ${{ env.VERSION }}
             New push
             ```
