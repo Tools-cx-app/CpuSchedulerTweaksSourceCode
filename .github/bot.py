@@ -30,7 +30,7 @@ def get_caption():
         anthor_name=COMMIT_AUTHOR_NAME,
     )
     if len(msg) > 1024:
-        return COMMIT_URL
+        return ""
     return msg
 
 async def main():
