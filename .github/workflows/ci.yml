@@ -107,6 +107,9 @@ jobs:
 =======
             Commit sha: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
             [ci_${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id)
+<<<<<<< HEAD
+>>>>>>> parent of 2d2ab55 (fix(ci): 修复ci文件)
+=======
 >>>>>>> parent of 2d2ab55 (fix(ci): 修复ci文件)
             Version: ${{ env.VERSION }}
             New push
