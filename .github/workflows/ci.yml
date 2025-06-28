@@ -115,5 +115,5 @@ jobs:
             ```by `${{ github.event.head_commit.author.name }}`
 >>>>>>> parent of c3596ef (feat(ci): 更新ci文件)
         run: |
-          pip3 install telethon
+          pip3 install python-telegram-bot
           python3 .github/bot.py
