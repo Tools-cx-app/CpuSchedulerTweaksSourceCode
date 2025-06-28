@@ -86,14 +86,15 @@ jobs:
           rm -rf module/.git
           cd module/
           zip -r ../CpuSchedulerTweaks.zip .
-      
+
       # 上传结果
       - name: Upload
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
           COMMIT_MESSAGE: |+
-            Commit count: ${{ env.COMMIT }}
+            Commit sha: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            [ci_${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id)
             Version: ${{ env.VERSION }}
             New push
             ```
