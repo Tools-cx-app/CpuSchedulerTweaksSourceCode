@@ -1,9 +1,14 @@
 mod cpu;
 mod cpuctl;
 mod dump;
-mod thread;
 
-use std::{fmt, fs::write, path::Path, process::Command, sync::mpsc::channel};
+use std::{
+    fmt,
+    fs::write,
+    path::Path,
+    process::Command,
+    sync::atomic::{AtomicBool, Ordering},
+};
 
 use anyhow::Result;
 use cpu::{Cpu, freq::CpuFreqs, governor::CpuGovernor};
@@ -48,7 +53,6 @@ impl fmt::Display for Mode {
         }
     }
 }
-
 impl Looper {
     pub fn new() -> Self {
         Self {
@@ -119,9 +123,6 @@ impl Looper {
         let surfaceflinger_pid = get_pid("surfaceflinger")?;
         set_current_priority(surfaceflinger_pid, -20)?;
         set_current_priority(std::process::id() as u32, 10)?;
-
-        let topapp = channel();
-        thread::topapp::start_topapp_thread(topapp.0);
 
         loop {
             inotify.read_events_blocking(&mut [0; 1024])?;
