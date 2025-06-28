@@ -94,7 +94,7 @@ jobs:
           CHAT_ID: ${{ secrets.CHAT_ID }}
           COMMIT_MESSAGE: |+
             Commit sha: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-            [ci_${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id)
+            [ci_${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
             Version: ${{ env.VERSION }}
             New push
             ```
