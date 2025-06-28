@@ -48,7 +48,7 @@ async def send_telegram_message():
             document=file,
             filename='CpuSchedulerTweaks.zip',
             caption=escaped_text,
-            parse_mode=ParseMode.MARKDOWN
+            parse_mode=ParseMode.MARKDOWN_V2
         )
 
 if __name__ == "__main__":
