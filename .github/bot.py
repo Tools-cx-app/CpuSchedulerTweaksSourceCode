@@ -17,7 +17,7 @@ COMMIT_AUTHOR_NAME = os.getenv('COMMIT_AUTHOR_NAME')
 def escape_markdownv2(text: str) -> str:
     """转义 Telegram MarkdownV2 特殊字符"""
     escape_chars = r'_*[]()~`>#+-=|{}.!'
-    return re.sub(f'([{re.escape(escape_chars)}])', r'\\1', text).strip()
+    return re.sub(f'([{re.escape(escape_chars)}])', r'\\\1', text).strip()
 
 async def send_telegram_message():
 
