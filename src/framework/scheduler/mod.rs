@@ -125,8 +125,22 @@ impl Looper {
         )?;
 
         let surfaceflinger_pid = get_pid("surfaceflinger")?;
+        let launcher3_pid = get_pid("com.android.launcher3")?;
+        let nexuslauncher_pid = get_pid("com.google.android.apps.nexuslauncher")?;
+        let hw_lanucher_pid = get_pid("com.huawei.android.launcher")?;
+        let miui_home_pid = get_pid("com.miui.home")?;
+        let vivo_launcher_pid = get_pid("com.vivo.launcher")?;
+        let oppo_launcher_pid = get_pid("com.oppo.launcher")?;
+        let sec_launcher_pid = get_pid("com.sec.android.app.launcher")?;
         set_current_priority(surfaceflinger_pid, -20)?;
         set_current_priority(std::process::id() as u32, 10)?;
+        set_current_priority(launcher3_pid, -15)?;
+        set_current_priority(nexuslauncher_pid, -15)?;
+        set_current_priority(hw_lanucher_pid, -15)?;
+        set_current_priority(miui_home_pid, -15)?;
+        set_current_priority(vivo_launcher_pid, -15)?;
+        set_current_priority(oppo_launcher_pid, -15)?;
+        set_current_priority(sec_launcher_pid, -15)?;
 
         loop {
             inotify.read_events_blocking(&mut [0; 1024])?;

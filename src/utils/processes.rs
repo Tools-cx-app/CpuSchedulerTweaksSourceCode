@@ -49,5 +49,5 @@ pub fn get_pid(package: &str) -> Result<u32> {
         }
     }
 
-    Err(anyhow!("无法获取pid"))
+    Ok(0)
 }
