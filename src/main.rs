@@ -193,6 +193,16 @@ fn main() -> Result<()> {
         Ok(o) => String::from_utf8_lossy(&o.stdout).to_string(),
         Err(_) => String::new(),
     };
+
+    let android_version = match &Command::new("getprop")
+        .arg("ro.build.version.release")
+        .output()
+    {
+        Ok(o) => String::from_utf8_lossy(&o.stdout).to_string(),
+        Err(_) => String::new(),
+    };
+    log::info!("Android版本:{}", android_version);
+
     if ksu_version != -1 {
         log::info!("KernelSU Kernel版本:{}", ksu_version);
     }
