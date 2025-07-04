@@ -93,6 +93,7 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
           COMMIT_MESSAGE: |+
+            Commit sha: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
             Commit count: ${{ env.COMMIT }}
             Version: ${{ env.VERSION }}
             New push
