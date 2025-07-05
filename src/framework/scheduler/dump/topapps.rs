@@ -40,8 +40,13 @@ impl TopAppWatch {
 
         let re =
             Regex::new(r"  TOP  .*?([a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)+)").unwrap();
+        let mut count = 0;
         for line in output.lines() {
             if let Some(caps) = re.captures(line) {
+                count += 1;
+                if count == 1 {
+                    continue;
+                }
                 self.topapps = caps[1].to_string();
                 continue;
             }
