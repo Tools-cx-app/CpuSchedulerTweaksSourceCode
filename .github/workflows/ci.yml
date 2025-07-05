@@ -105,7 +105,7 @@ jobs:
             
             [View Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             
-            #ci_${{ github.run_id }})
+            \#ci_${{ github.run_id }})
         run: |
           MSG="${COMMIT_MESSAGE}"
           ESCAPED=$(python3 -c 'import sys, re; msg = sys.argv[1]; msg = re.sub(r"([_*\[\]()~`>#+\-=|{}.!])", r"\\\1", msg); msg = msg.replace("\n", "\\n"); print(msg)' "$MSG")
