@@ -186,6 +186,7 @@ impl Looper {
                     if self.config.app_launch_boost {
                         self.cpu.set_freq(Mode::Fast);
                         self.cpu.set_governor(Mode::Fast);
+                        self.cpuctl.set_uclamp(Mode::Fast);
                         std::thread::sleep(std::time::Duration::from_secs(2));
                     }
                     log::info!("正在为{app}配置{mode}模式");
