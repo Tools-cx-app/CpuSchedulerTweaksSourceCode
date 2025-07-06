@@ -7,7 +7,7 @@ API_ID = 611335
 API_HASH = "d524b414d21f4d37f08684c1df41ac9c"
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
-CHAT_ID = os.environ.get("CHAT_ID")
+CHAT_ID = int(os.environ.get("CHAT_ID"))
 MESSAGE_THREAD_ID = 5
 RUN_ID = os.environ.get("RUN_ID")
 RUN_URL = os.environ.get("RUN_URL")
@@ -45,7 +45,7 @@ async def send_telegram_message():
         await client.send_file(
             entity=CHAT_ID,
             reply_to=MESSAGE_THREAD_ID,
-            file='/CpuSchedulerTweaks.zip',
+            file='./CpuSchedulerTweaks.zip',
             caption=caption,
             parse_mode="markdown"
         )
