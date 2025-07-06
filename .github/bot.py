@@ -35,18 +35,15 @@ def get_caption():
 async def send_telegram_message():
     async with TelegramClient(StringSession(BOT_CI_SESSION), api_id=API_ID, api_hash=API_HASH) as client:
         await client.start(bot_token=BOT_TOKEN)
-        caption = [""] * len('./CpuSchedulerTweaks.zip')
-        caption[-1] = get_caption()
         print("[+] Caption: ")
         print("---")
-        print(caption)
         print("---")
         print("[+] Sending")
         await client.send_file(
             entity=CHAT_ID,
             reply_to=MESSAGE_THREAD_ID,
             file='./CpuSchedulerTweaks.zip',
-            caption=caption,
+            caption=get_caption(),
             parse_mode="markdown"
         )
 
