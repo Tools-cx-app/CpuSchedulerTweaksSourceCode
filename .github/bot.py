@@ -1,5 +1,6 @@
 from telethon import TelegramClient
 import asyncio
+from telethon.sessions import StringSession
 import os
 
 API_ID = 611335
@@ -10,6 +11,7 @@ CHAT_ID = os.environ.get("CHAT_ID")
 MESSAGE_THREAD_ID = 5
 RUN_ID = os.environ.get("RUN_ID")
 COMMIT_MESSAGE = os.environ.get("COMMIT_MESSAGE")
+BOT_CI_SESSION = os.environ.get("BOT_CI_SESSION")
 MSG_TEMPLATE = """
 #ci_{run_id}
 ```
@@ -30,7 +32,7 @@ def get_caption():
     return msg
 
 async def send_telegram_message():
-    async with TelegramClient('ci_bot', api_id=API_ID, api_hash=API_HASH) as client:
+    async with TelegramClient(StringSession(BOT_CI_SESSION), api_id=API_ID, api_hash=API_HASH) as client:
         await client.start(bot_token=BOT_TOKEN)
         caption = [""] * len('./CpuSchedulerTweaks.zip')
         caption[-1] = get_caption()
