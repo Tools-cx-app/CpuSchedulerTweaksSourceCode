@@ -49,6 +49,6 @@ async def send_telegram_message():
 
 if __name__ == '__main__':
     try:
-        asyncio.run(send_telegram_message)
+        asyncio.run(send_telegram_message())
     except Exception as e:
         print(f"[-] An error occurred: {e}")
