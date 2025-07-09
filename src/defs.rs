@@ -7,7 +7,7 @@ pub const SDC_READ_AHEAD: &str = "/sys/class/block/sdc/queue/read_ahead_kb";
 pub const CPUSET: &str = "/dev/cpuset/";
 pub const CONFIG_PATH: &str = "/data/adb/modules/CpuSchedulerTweaks/config.toml";
 pub const MOD_PROP_PATH: &str = "/data/adb/modules/CpuSchedulerTweaks/module.prop";
-pub const BOOST_PATHS: [&str; 49] = [
+pub const BOOST_PATHS: [&str; 43] = [
     "/sys/power/pnpmgr/touch_boost",
     "/sys/power/pnpmgr/long_duration_touch_boost",
     "/sys/kernel/ems/eff_mode",
@@ -29,7 +29,6 @@ pub const BOOST_PATHS: [&str; 49] = [
     "/proc/mz_thermal_boost/sched_boost_enabled",
     "/proc/mz_scheduler/vip_task/enabled",
     "/proc/sys/fbg/frame_boost_enabled",
-    "/proc/sys/fbg/input_boost_enabled",
     "/proc/sys/fbg/slide_boost_enabled",
     "/sys/module/fbt_cpu/parameters/boost_affinity*",
     "/sys/module/mtk_fpsgo/parameters/boost_affinity*",
@@ -47,16 +46,11 @@ pub const BOOST_PATHS: [&str; 49] = [
     "/sys/module/mtk_core_ctl/parameters/policy_enable",
     "/sys/kernel/fpsgo/fbt/switch_idleprefer",
     "/sys/module/devfreq_boost/parameters/*",
-    "/sys/kernel/cpu_input_boost/*",
     "/sys/devices/system/cpu/cpu*/sched_load_boost",
     "/sys/devices/system/cpu/cpu_boost/*",
     "/sys/devices/system/cpu/cpu_boost/parameters/*",
     "/sys/module/cpu_boost/parameters/*",
     "/sys/module/dsboost/parameters/*",
-    "/sys/module/cpu_input_boost/parameters/*",
-    "/sys/module/input_cfboost/parameters/*",
-    "/sys/class/input_booster/*",
-    "/proc/sys/walt/input_boost/*",
 ];
 pub const RESET_TIME: std::time::Duration = std::time::Duration::from_millis(500);
 pub const TOP_APP_CPUCTL: &str = "/dev/cpuctl/top-app/";
