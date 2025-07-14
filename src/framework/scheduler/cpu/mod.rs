@@ -1,5 +1,6 @@
 pub mod freq;
 pub mod governor;
+pub mod auto;
 
 use std::path::Path;
 
