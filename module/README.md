@@ -46,11 +46,11 @@
     - `"performance"`: 性能模式
     - `"fast"`: 极速模式
 
-  - **binder**
+  - **auto**
 
     - 类型: `bool`
-    - `true`: 使用 Binder 通信获取前台应用
-    - `false`: 使用命令行方式获取前台应用 \*
+    - `true`: 使用 cpu_load 来判断是否升频
+    - `false`: 不使用 cpu_load 来判断是否升频 \*
 
   - **debug**
 

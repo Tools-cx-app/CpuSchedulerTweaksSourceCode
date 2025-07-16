@@ -2,6 +2,7 @@ osm = "powersave"
 
 debug = false
 app_launch_boost = true
+auto = false
 
 [io]
 scheduler = "bfq"
