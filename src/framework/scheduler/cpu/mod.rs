@@ -93,15 +93,15 @@ pub fn auto_load() -> Result<()> {
         thread::spawn(move || -> Result<()> {
             loop {
                 for (id, load) in cpu.get_cpu_load()? {
-                    let path = Path::new(format!("/sys/devices/system/cpu/cpu{}", id).as_str());
+                    let path = Path::new("/sys/devices/system/cpu/");
                     log::debug!("core{} load is {}", id, load);
 
                     if load > 90.0 {
-                        write_with_locked(path, "9999999");
+                        write_with_locked(path.join(format!("cpu{}", id).as_str()), "9999999")?;
                     }
 
                     if load > 60.0 && load < 90.0 {
-                        write_with_locked(path, "2000000");
+                        write_with_locked(path.join(format!("cpu{}", id).as_str()), "2000000")?;
                     }
                 }
             }
