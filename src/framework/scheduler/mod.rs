@@ -7,6 +7,7 @@ use std::{
     fs::{self, write},
     path::Path,
     process::Command,
+    sync::atomic::AtomicBool,
 };
 
 use anyhow::Result;
@@ -19,13 +20,14 @@ use inotify::{Inotify, WatchMask};
 use super::config::data::ConfigData;
 use crate::{
     defs::{self, SDC_READ_AHEAD, SDC_SCHEDULER},
-    framework::scheduler::dump::power::Power,
+    framework::scheduler::{cpu::auto_load, dump::power::Power},
     utils::{
         files::write_with_locked,
         processes::{get_pid, set_current_priority},
     },
 };
 
+static AUTO: AtomicBool = AtomicBool::new(false);
 #[derive(Debug, Clone, Copy)]
 pub enum Mode {
     Powersave,
@@ -123,6 +125,10 @@ impl Looper {
             Path::new(SDC_READ_AHEAD),
             self.config.io.read_ahead.to_string().as_str(),
         )?;
+        if self.config.auto {
+            AUTO.store(true, std::sync::atomic::Ordering::Relaxed);
+            auto_load()?;
+        }
 
         let surfaceflinger_pid = get_pid("surfaceflinger")?;
         let launcher3_pid = get_pid("com.android.launcher3")?;

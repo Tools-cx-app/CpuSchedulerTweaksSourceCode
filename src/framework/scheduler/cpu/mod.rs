@@ -1,9 +1,14 @@
 pub mod freq;
 pub mod governor;
 
-use std::path::Path;
+use std::{path::Path, thread};
 
-use crate::framework::config::data::ConfigData;
+use anyhow::Result;
+
+use crate::{
+    framework::{config::data::ConfigData, scheduler::AUTO},
+    utils::{cpu::CpuLoadUtils, files::write_with_locked},
+};
 
 pub struct Cpu {
     config: ConfigData,
@@ -79,4 +84,28 @@ impl ClusterPaths {
                 .unwrap_or(false),
         )
     }
+}
+
+pub fn auto_load() -> Result<()> {
+    let mut cpu = CpuLoadUtils::new()?;
+
+    if AUTO.load(std::sync::atomic::Ordering::Relaxed) {
+        thread::spawn(move || -> Result<()> {
+            loop {
+                for (id, load) in cpu.get_cpu_load()? {
+                    let path = Path::new(format!("/sys/devices/system/cpu/cpu{}", id).as_str());
+                    log::debug!("core{} load is {}", id, load);
+
+                    if load > 90.0 {
+                        write_with_locked(path, "9999999");
+                    }
+
+                    if load > 60.0 && load < 90.0 {
+                        write_with_locked(path, "2000000");
+                    }
+                }
+            }
+        });
+    }
+    Ok(())
 }
