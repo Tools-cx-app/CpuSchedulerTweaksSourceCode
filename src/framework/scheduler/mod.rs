@@ -125,6 +125,12 @@ impl Looper {
             Path::new(SDC_READ_AHEAD),
             self.config.io.read_ahead.to_string().as_str(),
         )?;
+
+        self.cpuctl.set_uclamp(Mode::Fast);
+        self.cpu.set_governor(Mode::Fast);
+        self.cpu.set_freq(Mode::Fast);
+        std::thread::sleep(std::time::Duration::from_secs(10));
+
         if self.config.auto {
             AUTO.store(true, std::sync::atomic::Ordering::Relaxed);
             auto_load()?;
