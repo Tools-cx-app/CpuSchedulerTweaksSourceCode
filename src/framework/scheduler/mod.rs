@@ -179,7 +179,9 @@ impl Looper {
             self.topapp.dump();
 
             if !self.power.state {
-                self.cpu.set_freq(Mode::Powersave);
+                if !self.config.auto {
+                    self.cpu.set_freq(Mode::Powersave);
+                }
                 self.cpu.set_governor(Mode::Powersave);
                 self.cpuctl.set_uclamp(Mode::Powersave)?;
                 continue;
@@ -190,19 +192,25 @@ impl Looper {
                 {
                     let mode = self.switch_mode(mode.as_str());
                     if self.config.app_launch_boost {
-                        self.cpu.set_freq(Mode::Fast);
+                        if !self.config.auto {
+                            self.cpu.set_freq(Mode::Fast);
+                        }
                         self.cpu.set_governor(Mode::Fast);
                         self.cpuctl.set_uclamp(Mode::Fast);
                         std::thread::sleep(std::time::Duration::from_secs(2));
                     }
                     log::info!("正在为{app}配置{mode}模式");
-                    self.cpu.set_freq(mode);
+                    if !self.config.auto {
+                        self.cpu.set_freq(mode);
+                    }
                     self.cpu.set_governor(mode);
                     self.cpuctl.set_uclamp(mode)?;
                     app_cache = Some(app);
                 } else {
                     let mode = self.switch_mode(self.config.osm.as_str());
-                    self.cpu.set_freq(mode);
+                    if !self.config.auto {
+                        self.cpu.set_freq(mode);
+                    }
                     self.cpu.set_governor(mode);
                     self.cpuctl.set_uclamp(mode)?;
                 }
