@@ -95,6 +95,7 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           RUN_ID: ${{ env.VERSION }}
           BRANCH: ${{ github.ref_name }}
+          HASH: ${{ github.sha }}
           BOT_CI_SESSION: ${{ secrets.BOT_CI_SESSION }}
           COMMIT_MESSAGE: ${{ format('{0}', github.event.head_commit.message) }}
         run: |

@@ -13,10 +13,12 @@ RUN_ID = os.environ.get("RUN_ID")
 RUN_URL = os.environ.get("RUN_URL")
 COMMIT_MESSAGE = os.environ.get("COMMIT_MESSAGE")
 BRANCH = os.environ.get("BRANCH")
+HASH = os.environ.get("HASH")
 BOT_CI_SESSION = os.environ.get("BOT_CI_SESSION")
 MSG_TEMPLATE = """
 #ci_{run_id}
 branch: {branch}
+hash: {hash}
 ```
 {commit_message}
 ```
@@ -28,6 +30,7 @@ def get_caption():
     msg = MSG_TEMPLATE.format(
         run_id=RUN_ID,
         branch=BRANCH,
+        hash=HASH,
         commit_message=COMMIT_MESSAGE,
         run_url=RUN_URL,
     )
